@@ -12,7 +12,7 @@ http.createServer((request, response) => {
   // If pathname includes documentation then
   // return the documentation/html file, if not then index.html
   if (q.pathname.includes('documentation')) {
-    filePath = (_dirname + '/documentation.html');
+    filePath = './documentation.html';
   } else {
     filePath = 'index.html';
   }
@@ -25,7 +25,7 @@ http.createServer((request, response) => {
     response.writeHead(200, {'Content-Type': 'text/html' });
     response.write(data);
     response.end();
-    
+
   });
 
   // Add instance of server request to log.txt file with URL and timestamp

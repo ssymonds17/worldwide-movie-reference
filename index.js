@@ -61,12 +61,6 @@ app.use(morgan('common'));
 // Exposes files from public folder in static form
 app.use(express.static('public'));
 
-// Error handler function
-app.use(function (err, req, res, next) {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
-});
-
 // GET requests
 app.get('/', function(req, res) {
     res.send('Welcome to my cinema club');
@@ -81,6 +75,12 @@ app.get('/', function(req, res) {
 
 app.get('/movies', function(req, res) {
     res.json(topMovies)
+});
+
+// Error handler function
+app.use(function (err, req, res, next) {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
 });
 
 // Listening for requests

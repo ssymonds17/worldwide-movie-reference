@@ -155,7 +155,7 @@ let = Users = [
       "email": "harrylarry62@aol.com",
       "date of birth": "1962-08-08",
       "favourites": {
-          "title": "Rear Window"
+
       } 
   }
 ]
@@ -234,16 +234,18 @@ app.post('/users/:username/favourites', (req, res) => {
 });
 
 // DELETE request to remove a movie from a users favourite list
-app.delete('users/:username/favourites/:title', (req, res) => {
-    // let favourite = Favourites.find((favourite) => {
-    //     return favourite.title === req.params.title
-    // });
+app.delete('/users/:username/favourites/:title', (req, res) => {
+    let favourite = Favourites.find((favourite) => {
+        return favourite.title === req.params.title
+    });
 
-    // if (favourite) {
-    //     Favourites.filter(function(obj) { return obj.title !== req.params.title });
-    //     res.status(201).send(req.params.title + " has been removed.")
-    // }
-    res.send("Movie has been removed from favourites list.");
+    if (favourite) {
+        Favourites.filter(function(obj) { 
+            return obj.title !== req.params.title 
+        });
+        res.status(201).send(req.params.title + " has been removed.")
+    }
+    // res.send("Movie has been removed from favourites list.");
 });
 
 // DELETE request to remove a user from the application by ID
@@ -253,7 +255,9 @@ app.delete('/users/:username', (req, res) => {
     });
 
     if (user) {
-        Users.filter(function(obj) { return obj.username !== req.params.username });
+        Users.filter(function(obj) { 
+            return obj.username !== req.params.username 
+        });
         res.status(201).send(req.params.username + " has been deleted.")
     }
 });

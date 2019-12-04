@@ -2,15 +2,148 @@
 <html>
   <head>
     <meta charset='utf-8'>
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
     <title>Documentation</title>
   </head>
   <body>
-    <h1>Worldwide Movie Reference</h1>
+    <h1>WorldWide Movie Reference</h1>
     <h2>Documentation</h2>
       <p>This web application will allow users to search for
       information on their favourite films, actors, or movie
-      genres. Additional functionality will allow personal
+      genres.</p>
+      <p>Additional functionality will allow personal
       information to be saved, as well as the ability to compile
       film lists etc.</p>
+      <table class ="content-table" style="width: 1000px;">
+        <thead>
+          <tr>
+            <th style="width: 150px">Request</th>
+            <th>URL</th>
+            <th>HTTP Method</th>
+            <th style="width: 400px">Request Body Data Format</th>
+            <th style="width: 400px">Response Body Data Format</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Return a list of All movies</td>
+            <td>/movies</td>
+            <td>GET</td>
+            <td>None</td>
+            <td>A JSON object holding data about all movies</td>
+          </tr>
+          <tr>
+            <td>Return data about a single movie using the name</td>
+            <td>/movies/[Name]</td>
+            <td>GET</td>
+            <td>None</td>
+            <td>A JSON object holding data about a specific movie, 
+              containing the title, movie length, year of release, a 
+              description of the film, its genre, the director and a relevant image. <br>
+              <br> Example: <p style="color:blue"> 
+                { <br>
+                  "title": "Raiders of the Lost Ark", <br>
+                  "length": 115, <br>
+                  "year": 1981, <br>
+                  "description": "In 1936, archaeologist and adventurer Indiana Jones is hired by
+                  the U.S. government to find the Ark of the Covenant before Adolf Hitler's Nazis
+                  can obtain its awesome powers.", <br>
+                  "genre": "Adventure", <br>
+                  "director": "Steven Spielberg", <br>
+                  "imageUrl": "raiders_lost_ark.png" <br>
+                }
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td>Return data about a genre using the name</td>
+            <td>/genres/[Name]</td>
+            <td>GET</td>
+            <td>None</td>
+            <td>A JSON object holding data about a genre, containing its name and description. <br>
+              <br> Example:  <p style="color:blue">
+                  { <br>
+                    "name": "Action", <br>
+                    "description": "Action film is a film genre in which the protagonist or protagonists are thrust
+                    into a series of events that typically include violence, extended fighting, physical feats, and frantic chases."
+                  }
+                </p>
+              </td>
+          </tr>
+          <tr>
+            <td>Return data about a director using their name</td>
+            <td>/directors/[Name]</td>
+            <td>GET</td>
+            <td>None</td>
+            <td>A JSON object holding data about a director, containing their name, a bio, their year of birth and year of death. <br>
+              <br> Example: <p style="color:blue">
+                  { <br>
+                    "name": "Alfred Hitchcock", <br>
+                    "bio": "Sir Alfred Joseph Hitchcock, KBE was an English film director and producer, widely regarded as one of \
+                    the most influential and extensively studied filmmakers in the history of cinema. His films are marked by a macabre \
+                    sense of humour and a somewhat bleak view of the human condition.", <br>
+                    "year of birth": 1899, <br>
+                    "year of death": 1980 <br> 
+                  }
+                </p>
+            </td>
+          </tr>
+          <tr>
+            <td>Allow new users to register</td>
+            <td>/users</td>
+            <td>POST</td>
+            <td>A JSON object containing the relevant data needed to register. <br>
+            <br> Example: <p style="color:blue">
+                { <br>
+                  "username": "harrylarry1962", <br>
+                  "password": "easytoguesspassword123", <br>
+                  "email": "harrylarry62@aol.com", <br>
+                  "date of birth": "1962-08-08", <br>
+                } 
+              </p>
+            </td>
+            <td>A JSON object holding data about the new user, including an ID and an empty array of potential favourite movies.<br>
+            <br> Example: <p style="color:blue">
+                { <br>
+                  "username": "harrylarry1962", <br>
+                  "password": "easytoguesspassword123", <br>
+                  "email": "harrylarry62@aol.com", <br>
+                  "date of birth": "1962-08-08", <br>
+                  "favourite movies": [], <br>
+                  "id": "f0a66ced-c4b2-49d2-8ef9-838f772b1c54" <br>
+                }
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td>Allow users to update their personal information</td>
+            <td>/users/[Username]</td>
+            <td>PUT</td>
+            <td>None</td>
+            <td>A message indicating that the information has been successfully updated.</td>
+          </tr>
+          <tr>
+            <td>Allow users to add a movie to their list of favourites</td>
+            <td>/users/[Username]/[Favourites]</td>
+            <td>POST</td>
+            <td>None</td>
+            <td>A message indicating that the desired movie has been added to the list of favourites.</td>
+          </tr>
+          <tr>
+            <td>Allow users to remove a movie from their favourite list.</td>
+            <td>/users/[Username]/[Favourites]/[Title]</td>
+            <td>DELETE</td>
+            <td>None</td>
+            <td>A message indicating that the specified movie has been removed from their favourite list.</td>
+          </tr>
+          <tr>
+            <td>Allow a user to remove all their personal data (de-register)</td>
+            <td>/users/[Username]</td>
+            <td>DELETE</td>
+            <td>None</td>
+            <td>A message indicating that personal information has been successfully removed.</td>
+          </tr>
+        </tbody>
+      </table>
   </body>
 </html>

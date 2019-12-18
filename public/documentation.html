@@ -14,14 +14,14 @@
       <p>Additional functionality will allow personal
       information to be saved, as well as the ability to compile
       film lists etc.</p>
-      <table class ="content-table" style="width: 1000px;">
+      <table class ="content-table" style="width: 1200px;">
         <thead>
           <tr>
             <th style="width: 150px">Request</th>
             <th>URL</th>
             <th>HTTP Method</th>
-            <th style="width: 400px">Request Body Data Format</th>
-            <th style="width: 400px">Response Body Data Format</th>
+            <th style="width: 500px">Request Body Data Format</th>
+            <th style="width: 700px">Response Body Data Format</th>
           </tr>
         </thead>
         <tbody>
@@ -42,15 +42,17 @@
               description of the film, its genre, the director and a relevant image. <br>
               <br> Example: <p style="color:blue"> 
                 { <br>
-                  "title": "Raiders of the Lost Ark", <br>
-                  "length": 115, <br>
-                  "year": 1981, <br>
-                  "description": "In 1936, archaeologist and adventurer Indiana Jones is hired by
+                  "_id" : ObjectId("5df39780ed3766a45674006f"), <br>
+                  "title" : "Raiders of the Lost Ark", <br>
+                  "year" : 1981, <br>
+                  "description" : "In 1936, archaeologist and adventurer Indiana Jones is hired by
                   the U.S. government to find the Ark of the Covenant before Adolf Hitler's Nazis
                   can obtain its awesome powers.", <br>
-                  "genre": "Adventure", <br>
-                  "director": "Steven Spielberg", <br>
-                  "imageUrl": "raiders_lost_ark.png" <br>
+                  "genre" : "Adventure", <br>
+                  "director" : "Steven Spielberg", <br>
+                  "actors" : [], <br>
+                  "length" : 115, <br>
+                  "imageUrl" : "raidersofthelostark.png" <br>
                 }
               </p>
             </td>
@@ -78,12 +80,12 @@
             <td>A JSON object holding data about a director, containing their name, a bio, their year of birth and year of death. <br>
               <br> Example: <p style="color:blue">
                   { <br>
-                    "name": "Alfred Hitchcock", <br>
-                    "bio": "Sir Alfred Joseph Hitchcock, KBE was an English film director and producer, widely regarded as one of \
+                    "name" : "Alfred Hitchcock", <br>
+                    "bio" : "Sir Alfred Joseph Hitchcock, KBE was an English film director and producer, widely regarded as one of \
                     the most influential and extensively studied filmmakers in the history of cinema. His films are marked by a macabre \
                     sense of humour and a somewhat bleak view of the human condition.", <br>
-                    "year of birth": 1899, <br>
-                    "year of death": 1980 <br> 
+                    "birthYear" : "1899", <br>
+                    "deathYear" : "1980" <br> 
                   }
                 </p>
             </td>
@@ -95,22 +97,24 @@
             <td>A JSON object containing the relevant data needed to register. <br>
             <br> Example: <p style="color:blue">
                 { <br>
+                  "name" : "Harry Larry",
                   "username": "harrylarry1962", <br>
                   "password": "easytoguesspassword123", <br>
                   "email": "harrylarry62@aol.com", <br>
-                  "date of birth": "1962-08-08", <br>
+                  "birthday": "1962-08-08", <br>
                 } 
               </p>
             </td>
             <td>A JSON object holding data about the new user, including an ID and an empty array of potential favourite movies.<br>
             <br> Example: <p style="color:blue">
                 { <br>
+                  "_id" : ObjectId("5dfa16eda4fd6e0ec5e4fb51"), <br>
+                  "favouriteMovies" : [], <br>
+                  "name" : "Harry Larry", <br>
                   "username": "harrylarry1962", <br>
                   "password": "easytoguesspassword123", <br>
                   "email": "harrylarry62@aol.com", <br>
-                  "date of birth": "1962-08-08", <br>
-                  "favourite movies": [], <br>
-                  "id": "f0a66ced-c4b2-49d2-8ef9-838f772b1c54" <br>
+                  "birthday": "1962-08-08", <br>
                 }
               </p>
             </td>
@@ -119,22 +123,71 @@
             <td>Allow users to update their personal information</td>
             <td>/users/[Username]</td>
             <td>PUT</td>
-            <td>None</td>
-            <td>A message indicating that the information has been successfully updated.</td>
+            <td>A JSON object holding the desired data updates. <br>
+            <br> Example: <p style="color:blue">
+                { <br>
+                  "_id" : ObjectId("5dfa16eda4fd6e0ec5e4fb51"), <br>
+                  "favouriteMovies" : [], <br>
+                  "name" : "Harry Larry", <br>
+                  "username": "harrylarry1965", <br>
+                  "password": "easytoguesspassword123", <br>
+                  "email": "harrylarry65@aol.com", <br>
+                  "birthday": "1965-03-17", <br>
+                }
+              </p>
+            </td>
+            <td>A JSON object displaying the data updates made. <br>
+              <br> Example: <p style="color:blue">
+                  { <br>
+                    "_id" : ObjectId("5dfa16eda4fd6e0ec5e4fb51"), <br>
+                    "favouriteMovies" : [], <br>
+                    "name" : "Harry Larry", <br>
+                    "username": "harrylarry1965", <br>
+                    "password": "easytoguesspassword123", <br>
+                    "email": "harrylarry65@aol.com", <br>
+                    "birthday": "1965-03-17", <br>
+                  }
+                </p>
+            </td>          
           </tr>
           <tr>
             <td>Allow users to add a movie to their list of favourites</td>
-            <td>/users/[Username]/[Favourites]</td>
+            <td>/users/[Username]/movies/[MovieID]</td>
             <td>POST</td>
             <td>None</td>
-            <td>A message indicating that the desired movie has been added to the list of favourites.</td>
+            <td>A JSON object hllding the user data, including the new favourite movie ID. <br>
+            <br> Example: <p style="color:blue">
+                { <br>
+                  "_id" : ObjectId("5dfa16eda4fd6e0ec5e4fb51"), <br>
+                  "favouriteMovies" : [ <br>
+                      "5df39696ed3766a456740066" <br>
+                  ], <br>
+                  "name" : "Harry Larry", <br>
+                  "username": "harrylarry1965", <br>
+                  "password": "easytoguesspassword123", <br>
+                  "email": "harrylarry65@aol.com", <br>
+                  "birthday": "1965-03-17", <br>
+                  }
+              </p>
+            </td>
           </tr>
           <tr>
             <td>Allow users to remove a movie from their favourite list.</td>
-            <td>/users/[Username]/[Favourites]/[Title]</td>
+            <td>/users/[Username]/movies/[MovieID]</td>
             <td>DELETE</td>
             <td>None</td>
-            <td>A message indicating that the specified movie has been removed from their favourite list.</td>
+            <td>A JSON object holding the users data, with the specified movie ID removed. <br>
+              <br> Example: <p style="color:blue">
+                  { <br>
+                    "_id" : ObjectId("5dfa16eda4fd6e0ec5e4fb51"), <br>
+                    "favouriteMovies" : [], <br>
+                    "name" : "Harry Larry", <br>
+                    "username": "harrylarry1965", <br>
+                    "password": "easytoguesspassword123", <br>
+                    "email": "harrylarry65@aol.com", <br>
+                    "birthday": "1965-03-17", <br>
+                    }
+                </p></td>
           </tr>
           <tr>
             <td>Allow a user to remove all their personal data (de-register)</td>

@@ -1,21 +1,21 @@
 const mongoose = require('mongoose');
 
 var movieSchema = mongoose.Schema({
-    Title : { type: String, required: true},
-    Year: String,
-    Description : { type: String, required: true},
-    Genre : {
-        Name : String,
-        Description: String
+    title : { type: String, required: true},
+    year: String,
+    description : { type: String, required: true},
+    genre : {
+        name : String,
+        description: String
     },
-    Director : {
-        Name :  String,
-        Bio : String
+    director : {
+        name :  String,
+        bio : String
     },
-    Actors : [String],
-    Length: Number,
-    ImagePath : String,
-    Featured : Boolean
+    actors : [String],
+    length: Number,
+    imagePath : String,
+    featured : Boolean
 });
 
 var userSchema = mongoose.Schema({
@@ -27,8 +27,25 @@ var userSchema = mongoose.Schema({
     favouriteMovies : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie' }]
 });
 
+var directorSchema = mongoose.Schema({
+    name: String,
+    bio: String,
+    birthYear: String,
+    deathYear: String
+});
+
+var genreSchema = mongoose.Schema({
+    name: String,
+    description: String
+});
+
+
 var Movie = mongoose.model('Movie', movieSchema);
 var User = mongoose.model('User', userSchema);
+var Director = mongoose.model('Director', userSchema);
+var Genre = mongoose.model('Genre', userSchema);
 
 module.exports.Movie = Movie;
 module.exports.User = User;
+module.exports.Director = Director;
+module.exports.Genre = Genre;

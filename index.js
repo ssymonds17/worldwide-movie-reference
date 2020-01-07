@@ -25,8 +25,15 @@ app.use(morgan('common'));
 // Exposes files from public folder in static form
 app.use(express.static('public'));
 
+// Imports my auth.js file into my project
+let auth = require('./auth')(app);
+
+// Imports my passport.js file into my project
+const passport = require('passport');
+require('./passport');
+
 // GET request to return a list of ALL movies
-app.get('/movies', function(req, res) {
+app.get('/movies', passport.authenticate('jwt', { session : false }), function(req, res) {
     Movies.find()
     .then(function(movies) {
         res.status(201).json(movies)
@@ -38,7 +45,7 @@ app.get('/movies', function(req, res) {
 });
 
 // GET request to return data about a movie by title
-app.get('/movies/:title', function(req, res) {
+app.get('/movies/:title', passport.authenticate('jwt', { session : false }), function(req, res) {
     Movies.findOne({ title: req.params.title })
     .then(function(movie) {
         res.json(movie)
@@ -50,7 +57,7 @@ app.get('/movies/:title', function(req, res) {
 });
 
 // GET request to return data about a genre by name
-app.get('/genres/:name', function(req, res) {
+app.get('/genres/:name', passport.authenticate('jwt', { session : false }), function(req, res) {
     Genres.findOne({ name : req.params.name })
     .then(function(genre) {
         res.json(genre)
@@ -62,7 +69,7 @@ app.get('/genres/:name', function(req, res) {
 });
 
 // GET request to return data about a director by name
-app.get('/directors/:name', function(req, res) {
+app.get('/directors/:name', passport.authenticate('jwt', { session : false }), function(req, res) {
     Directors.findOne({ name : req.params.name })
     .then(function(director) {
         res.json(director)
@@ -108,7 +115,7 @@ app.post('/users', function(req, res) {
 });
 
 // GET request to return ALL USERS
-app.get('/users', function(req, res) {
+app.get('/users', passport.authenticate('jwt', { session : false }), function(req, res) {
     Users.find()
     .then(function(users) {
         res.status(201).json(users)
@@ -120,7 +127,7 @@ app.get('/users', function(req, res) {
 });
 
 // GET request to return USER BY USERNAME
-app.get('/users/:username', function(req, res) {
+app.get('/users/:username', passport.authenticate('jwt', { session : false }), function(req, res) {
     Users.findOne({ username : req.params.username })
     .then(function(user) {
         res.status(201).json(user)
@@ -141,7 +148,7 @@ app.get('/users/:username', function(req, res) {
     birthday: Date
 }
 */
-app.put('/users/:username', function(req, res) {
+app.put('/users/:username', passport.authenticate('jwt', { session : false }), function(req, res) {
     Users.findOneAndUpdate({ username : req.params.username }, 
     { $set : 
      {
@@ -163,7 +170,7 @@ app.put('/users/:username', function(req, res) {
 });
 
 // POST request that allows a user to add a movie to list of FAVOURITES
-app.post('/users/:username/movies/:movieID', function(req, res) {
+app.post('/users/:username/movies/:movieID', passport.authenticate('jwt', { session : false }), function(req, res) {
     Users.findOneAndUpdate({ username : req.params.username },
         {
             $push : { favouriteMovies : req.params.movieID }
@@ -180,7 +187,7 @@ app.post('/users/:username/movies/:movieID', function(req, res) {
 });
 
 // DELETE request to remove a movie from a users favourite list
-app.delete('/users/:username/movies/:movieID', function(req, res) {
+app.delete('/users/:username/movies/:movieID', passport.authenticate('jwt', { session : false}), function(req, res) {
     Users.findOneAndUpdate({ username : req.params.username },
         {
             $pull : { favouriteMovies : req.params.movieID }
@@ -197,7 +204,7 @@ app.delete('/users/:username/movies/:movieID', function(req, res) {
 });
 
 // DELETE request to remove a USER by USERNAME
-app.delete('/users/:username', function(req, res) {
+app.delete('/users/:username', passport.authenticate('jwt', { session : false }), function(req, res) {
     Users.findOneAndRemove({ username : req.params.username })
     .then(function(user) {
         if (!user) {

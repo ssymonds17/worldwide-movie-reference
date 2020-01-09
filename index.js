@@ -2,7 +2,10 @@ const express = require('express'),
     morgan = require('morgan'), 
     bodyParser = require('body-parser'),
     uuid = require('uuid'), 
-    app = express();
+    app = express(),
+    cors = require('cors');
+
+const { check, validationResult } = require('express-validator');
 
 const mongoose = require('mongoose');
 const Models = require('./models.js');
@@ -19,6 +22,9 @@ mongoose.connect('mongodb://localhost/wwMovieReferenceDB', {useNewUrlParser: tru
 // Utilising body-parser module
 app.use(bodyParser.json());
 
+// Utilising CORS module
+app.use(cors());
+
 // Morgan middleware that logs server requests
 app.use(morgan('common'));
 
@@ -31,6 +37,21 @@ let auth = require('./auth')(app);
 // Imports my passport.js file into my project
 const passport = require('passport');
 require('./passport');
+
+// Code sets that only certain origins have access to the API
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+
+app.use(cors({
+    origin: function(origin, callback){
+        if(!origin) return callback(null, true);
+        if(allowedOrigins.indexOf(origin) === -1){ // If a specific origin isn't
+        // found on the list of allowed origins
+            let message = 'CORS policy for this application doesn\'t allow access from origin ' + origin;
+            return callback(new Error(message ), false);
+        }
+        return callback(null, true);
+    }
+}));
 
 // GET request to return a list of ALL movies
 app.get('/movies', passport.authenticate('jwt', { session : false }), function(req, res) {
@@ -90,7 +111,25 @@ app.get('/directors/:name', passport.authenticate('jwt', { session : false }), f
     Birthday : Date,
 }
 */
-app.post('/users', function(req, res) {
+app.post('/users', 
+    // Validation logic here for request
+    // I can either use a chain of methods like .not().isEmpty()
+    // Which means "opposite of isEmpty". I.e "Is not empty"
+    // Or use .isLength({min:5}) which means
+    // Minimum value of 5 characters are only allowed
+    [check('username', 'Username is required').isLength({min: 5}),
+    check('username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('password', 'Password is required').not().isEmpty(),
+    check('email', 'Email does not appear to be valid').isEmail()], (req, res) => {
+    
+    // Check validation object for errors
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+
+    let hashedPassword = Users.hashPassword(req.body.password);
     Users.findOne({ username : req.body.username }).then(function(user) {
         if (user) {
             return res.status(400).send(req.body.username + "already exists");
@@ -98,7 +137,7 @@ app.post('/users', function(req, res) {
             Users.create({
                 name:  req.body.name,
                 username: req.body.username,
-                password: req.body.password,
+                password: hashedPassword,
                 email: req.body.email,
                 birthday: req.body.birthday
             })
@@ -148,13 +187,31 @@ app.get('/users/:username', passport.authenticate('jwt', { session : false }), f
     birthday: Date
 }
 */
-app.put('/users/:username', passport.authenticate('jwt', { session : false }), function(req, res) {
+app.put('/users/:username', passport.authenticate('jwt', { session : false }), 
+    // Validation logic here for request
+    // I can either use a chain of methods like .not().isEmpty()
+    // Which means "opposite of isEmpty". I.e "Is not empty"
+    // Or use .isLength({min:5}) which means
+    // Minimum value of 5 characters are only allowed
+    [check('username', 'Username is required').isLength({min: 5}),
+    check('username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('password', 'Password is required').not().isEmpty(),
+    check('email', 'Email does not appear to be valid').isEmail()], (req, res) => {
+    
+    // Check validation object for errors
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+    
+    let hashedPassword = Users.hashPassword(req.body.password);
     Users.findOneAndUpdate({ username : req.params.username }, 
     { $set : 
      {
         name: req.body.name, 
         username: req.body.username,
-        password : req.body.password,
+        password : hashedPassword,
         email : req.body.email,
         birthday : req.body.birthday
      }},
@@ -226,6 +283,7 @@ app.use(function (err, req, res, next) {
 });
 
 // Listening for requests
-app.listen(8080, () => 
-console.log('Your app is listening on port 8080.')
-);
+let port = process.env.PORT || 3000;
+app.listen(port, "0.0.0.0", function() {
+    console.log("Listening on Port 3000");
+});

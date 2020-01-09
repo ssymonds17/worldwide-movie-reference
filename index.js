@@ -17,7 +17,10 @@ const Genres = Models.Genre;
 
 const db = 'mongodb://localhost/wwMovieReferenceDB';
 // Allows Mongoose access to my database
-mongoose.connect('mongodb://localhost/wwMovieReferenceDB', {useNewUrlParser: true});
+// mongoose.connect('mongodb://localhost/wwMovieReferenceDB', {useNewUrlParser: true});
+
+// Online database connection
+mongoose.connect('mongodb+srv://wwmrAdmin:<admin>@initialclusters-rht6n.mongodb.net/test?retryWrites=true&w=majority', {useNewUrlParser: true});
 
 // Utilising body-parser module
 app.use(bodyParser.json());

@@ -36,17 +36,13 @@ app.use(express.static('public'));
 
 // Imports my auth.js file into my project
 let auth = require('./auth')(app);
-// When checking logs in Heroku it says that jsonwebtoken module cannot be found
-// So I believe that the variable above needs to be used here to activate it somehow
-// This is the reason for the line below...
-// app.use(auth()); // Work in progress
 
 // Imports my passport.js file into my project
 const passport = require('passport');
 require('./passport');
 
 // Code sets that only certain origins have access to the API
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+let allowedOrigins = ['http://localhost:8080', 'https://worldwide-movie-reference.herokuapp.com'];
 
 app.use(cors({
     origin: function(origin, callback){

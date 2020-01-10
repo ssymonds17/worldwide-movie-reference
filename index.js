@@ -62,7 +62,7 @@ app.use(cors({
 
 // Welcome text on page visit
 app.get('/', (req, res) => {
-    res.send('WorldWide Movie Reference');
+    return res.send('WorldWide Movie Reference');
 });
 
 // GET request to return a list of ALL movies

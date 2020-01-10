@@ -36,7 +36,10 @@ app.use(express.static('public'));
 
 // Imports my auth.js file into my project
 let auth = require('./auth')(app);
-app.use(auth());
+// When checking logs in Heroku it says that jsonwebtoken module cannot be found
+// So I believe that the variable above needs to be used here to activate it somehow
+// This is the reason for the line below...
+// app.use(auth()); // Work in progress
 
 // Imports my passport.js file into my project
 const passport = require('passport');

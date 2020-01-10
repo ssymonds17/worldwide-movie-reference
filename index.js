@@ -36,6 +36,7 @@ app.use(express.static('public'));
 
 // Imports my auth.js file into my project
 let auth = require('./auth')(app);
+app.use(auth());
 
 // Imports my passport.js file into my project
 const passport = require('passport');

@@ -42,7 +42,7 @@ const passport = require('passport');
 require('./passport');
 
 // Code sets that only certain origins have access to the API
-let allowedOrigins = ['http://localhost:8080', 'http://worldwide-movie-reference.herokuapp.com'];
+let allowedOrigins = ['http://localhost:3000', 'http://worldwide-movie-reference.herokuapp.com'];
 
 app.use(cors({
     origin: function(origin, callback){

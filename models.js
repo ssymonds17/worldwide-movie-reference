@@ -28,12 +28,12 @@ var userSchema = mongoose.Schema({
     favouriteMovies : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie' }]
 });
 
-userSchema.statics.hashpassword = function(password) {
+userSchema.statics.hashPassword = function(password) {
     return bcrypt.hashSync(password, 10);
 };
 
 userSchema.methods.validatePassword = function(password) {
-    return bcrypt.compareSync(password, this.Password);
+    return bcrypt.compareSync(password, this.password);
 };
 
 var directorSchema = mongoose.Schema({

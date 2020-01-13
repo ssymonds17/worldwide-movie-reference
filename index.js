@@ -20,7 +20,7 @@ const db = 'mongodb://localhost/wwMovieReferenceDB';
 // mongoose.connect('mongodb://localhost/wwMovieReferenceDB', {useNewUrlParser: true});
 
 // Online database connection
-mongoose.connect('mongodb+srv://wwmrAdmin:<admin>@initialclusters-rht6n.mongodb.net/test?retryWrites=true&w=majority', {useNewUrlParser: true});
+mongoose.connect('mongodb+srv://wwmrAdmin:admin@initialclusters-rht6n.mongodb.net/test?retryWrites=true&w=majority', {useNewUrlParser: true});
 
 // Utilising body-parser module
 app.use(bodyParser.json());

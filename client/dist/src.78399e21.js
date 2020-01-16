@@ -33645,13 +33645,13 @@ function (_React$Component) {
         className: "label"
       }, "Genre: "), _react.default.createElement("span", {
         className: "value"
-      }, movie.genre.name)), _react.default.createElement("div", {
+      }, movie.genre)), _react.default.createElement("div", {
         className: "movie-director"
       }, _react.default.createElement("span", {
         className: "label"
       }, "Director: "), _react.default.createElement("span", {
         className: "value"
-      }, movie.director.name)), _react.default.createElement("button", {
+      }, movie.director)), _react.default.createElement("button", {
         className: "back-button",
         onClick: function onClick() {
           return previous();
@@ -33941,7 +33941,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53944" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59803" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

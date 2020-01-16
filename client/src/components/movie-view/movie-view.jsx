@@ -29,12 +29,12 @@ export class MovieView extends React.Component {
 
         <div className="movie-genre">
           <span className="label">Genre: </span>
-          <span className="value">{movie.genre.name}</span>
+          <span className="value">{movie.genre}</span>
         </div>
 
         <div className="movie-director">
           <span className="label">Director: </span>
-          <span className="value">{movie.director.name}</span>
+          <span className="value">{movie.director}</span>
         </div>
 
         <button className="back-button" onClick={() => previous()}>Back</button>

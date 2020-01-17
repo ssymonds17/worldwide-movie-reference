@@ -1,4 +1,7 @@
 import React from 'react';
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+import './movie-view.scss';
 
 export class MovieView extends React.Component {
 
@@ -14,32 +17,20 @@ export class MovieView extends React.Component {
     if (!movie) return null;
 
     return (
-      <div className="movie-view">
 
-        <img className="movie-poster" src={movie.imagepath} />
-        <div className="movie-title">
-          <span className="label">Title: </span>
-          <span className="value">{movie.title}</span>
-        </div>
-
-        <div className="movie-description">
-          <span className="label">Description: </span>
-          <span className="value">{movie.description}</span>
-        </div>
-
-        <div className="movie-genre">
-          <span className="label">Genre: </span>
-          <span className="value">{movie.genre}</span>
-        </div>
-
-        <div className="movie-director">
-          <span className="label">Director: </span>
-          <span className="value">{movie.director}</span>
-        </div>
-
-        <button className="back-button" onClick={() => previous()}>Back</button>
-
-      </div>
+      <Card className="movieViewContainer" style={{ width: '75%' }}>
+        {/* <Card.Img variant="top" src={movie.imagePath} /> */}
+        <Card.Img className="movieViewImage" variant="top" src="http://via.placeholder.com/640x360" />
+        <Card.Body>
+          <Card.Title>{movie.title}</Card.Title>
+          <Card.Text>{movie.year}</Card.Text>
+          <Card.Text>Description: {movie.description}</Card.Text>
+          <Card.Text>Run Time: {movie.length} minutes</Card.Text>
+          <Card.Text>Genre: {movie.genre}</Card.Text>
+          <Card.Text>Director: {movie.director}</Card.Text>
+          <Button variant="outline-secondary" className="back-button" onClick={() => previous()}>Back</Button>
+        </Card.Body>
+      </Card>
     );
   }
 }

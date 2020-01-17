@@ -1,3 +1,40 @@
+.navBrand {
+  color: white;
+}
+.loginContainer {
+  width: 100%;
+  max-width: 330px;
+  padding-top: 100px;
+  margin: auto;
+  height: 100%;
+}
+
+h1 {
+  font-size: 26px;
+}
+.registrationContainer {
+  width: 100%;
+  max-width: 330px;
+  padding-top: 100px;
+  margin: auto;
+  height: 100%;
+}
+
+h1 {
+  font-size: 26px;
+}
+.movieCardContainer {
+  margin-top: 80px;
+  margin-bottom: 40px;
+}
+.movieViewContainer {
+  margin-top: 80px;
+}
+
+.movieViewImage {
+  max-width: 500px;
+  max-height: 330px;
+}
 .ww-movie-db {
   color: steelblue;
 }

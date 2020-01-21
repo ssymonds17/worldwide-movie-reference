@@ -42561,6 +42561,8 @@ var _Container = _interopRequireDefault(require("react-bootstrap/Container"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
+var _axios = _interopRequireDefault(require("axios"));
+
 var _navbar = _interopRequireDefault(require("../navbar/navbar"));
 
 require("./login-view.scss");
@@ -42591,11 +42593,17 @@ function LoginView(props) {
       setPassword = _useState4[1];
 
   var handleSubmit = function handleSubmit(e) {
-    e.preventDefault();
-    console.log(username, password); // Send a request to the server for authentication
-    // then call props.onLoggedIn(username)
+    e.preventDefault(); // Send a request to the server for authentication
 
-    props.onLoggedIn(username);
+    _axios.default.post('https://worldwide-movie-reference.herokuapp.com/login', {
+      username: username,
+      password: password
+    }).then(function (response) {
+      var data = response.data;
+      props.onLoggedIn(data);
+    }).catch(function (e) {
+      console.log('no such user');
+    });
   };
 
   return _react.default.createElement("div", null, _react.default.createElement(_navbar.default, null), _react.default.createElement(_Container.default, {
@@ -42636,7 +42644,7 @@ LoginView.propTypes = {
   onLoggedIn: _propTypes.default.func.isRequired,
   onClick: _propTypes.default.func.isRequired
 };
-},{"react":"../node_modules/react/index.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Container":"../node_modules/react-bootstrap/esm/Container.js","prop-types":"../node_modules/prop-types/index.js","../navbar/navbar":"components/navbar/navbar.jsx","./login-view.scss":"components/login-view/login-view.scss"}],"components/registration-view/registration-view.scss":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Container":"../node_modules/react-bootstrap/esm/Container.js","prop-types":"../node_modules/prop-types/index.js","axios":"../node_modules/axios/index.js","../navbar/navbar":"components/navbar/navbar.jsx","./login-view.scss":"components/login-view/login-view.scss"}],"components/registration-view/registration-view.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -43212,9 +43220,31 @@ function (_React$Component) {
     }
   }, {
     key: "onLoggedIn",
-    value: function onLoggedIn(user) {
+    value: function onLoggedIn(authData) {
+      console.log(authData);
       this.setState({
-        user: user
+        user: authData.user.username
+      });
+      localStorage.setItem('token', authData.token);
+      localStorage.setItem('user', authData.user.username);
+      this.getMovies(authData.token);
+    }
+  }, {
+    key: "getMovies",
+    value: function getMovies(token) {
+      var _this3 = this;
+
+      _axios.default.get('https://worldwide-movie-reference.herokuapp.com/movies', {
+        headers: {
+          Authorization: "Bearer ".concat(token)
+        }
+      }).then(function (response) {
+        // Assign the result to the state
+        _this3.setState({
+          movies: response.data
+        });
+      }).catch(function (error) {
+        console.log(error);
       });
     } // Back button to return to list of movie cards
 
@@ -43248,7 +43278,7 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this4 = this;
 
       // If the state isn't initialised, this will throw on runtime
       // Before the data is initially loaded
@@ -43259,18 +43289,18 @@ function (_React$Component) {
           register = _this$state.register;
       if (!user && register === false) return _react.default.createElement(_loginView.LoginView, {
         onClick: function onClick() {
-          return _this3.onRegister();
+          return _this4.onRegister();
         },
         onLoggedIn: function onLoggedIn(user) {
-          return _this3.onLoggedIn(user);
+          return _this4.onLoggedIn(user);
         }
       });
       if (register) return _react.default.createElement(_registrationView.RegistrationView, {
         onClick: function onClick() {
-          return _this3.onYetToSignIn();
+          return _this4.onYetToSignIn();
         },
         onSignedIn: function onSignedIn(user) {
-          return _this3.onSignedIn(user);
+          return _this4.onSignedIn(user);
         }
       }); // Before the movies have been loaded
 
@@ -43292,7 +43322,7 @@ function (_React$Component) {
           key: movie._id,
           movie: movie,
           onClick: function onClick(movie) {
-            return _this3.onMovieClick(movie);
+            return _this4.onMovieClick(movie);
           }
         }));
       }))));
@@ -43393,7 +43423,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49710" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51297" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -46041,40 +46041,9 @@ function (_React$Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(DirectorView).call(this));
     _this.state = {};
     return _this;
-  } // Get Directors request function add HERE
-
+  }
 
   _createClass(DirectorView, [{
-    key: "getDirectors",
-    value: function getDirectors(token) {
-      var _this2 = this;
-
-      axios.get('https://worldwide-movie-reference.herokuapp.com/directors', {
-        headers: {
-          Authorization: "Bearer ".concat(token)
-        }
-      }).then(function (response) {
-        // Assign the result to the state
-        _this2.setState({
-          directors: response.data
-        });
-      }).catch(function (error) {
-        console.log(error);
-      });
-    }
-  }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var accessToken = localStorage.getItem('token');
-
-      if (accessToken !== null) {
-        this.setState({
-          user: localStorage.getItem('user')
-        });
-        this.getDirectors(accessToken);
-      }
-    }
-  }, {
     key: "render",
     value: function render() {
       var director = this.props.director;

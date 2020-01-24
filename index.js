@@ -85,11 +85,35 @@ app.get('/movies/:title', function (req, res) {
     });
 });
 
+// GET request to return a list of ALL Genres
+app.get('/genres', passport.authenticate('jwt', { session: false }), function (req, res) {
+  Genres.find()
+    .then(function (genres) {
+      res.status(201).json(genres)
+    })
+    .catch(function (err) {
+      console.error(err);
+      res.status(500).send("Error" + err);
+    });
+});
+
 // GET request to return data about a genre by name
 app.get('/genres/:name', passport.authenticate('jwt', { session: false }), function (req, res) {
   Genres.findOne({ name: req.params.name })
     .then(function (genre) {
       res.json(genre)
+    })
+    .catch(function (err) {
+      console.error(err);
+      res.status(500).send("Error" + err);
+    });
+});
+
+// GET request to return a list of ALL Directors
+app.get('/directors', passport.authenticate('jwt', { session: false }), function (req, res) {
+  Directors.find()
+    .then(function (directors) {
+      res.status(201).json(directors)
     })
     .catch(function (err) {
       console.error(err);

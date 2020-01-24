@@ -45622,8 +45622,6 @@ var _Container = _interopRequireDefault(require("react-bootstrap/Container"));
 
 var _axios = _interopRequireDefault(require("axios"));
 
-var _navbar = _interopRequireDefault(require("../navbar/navbar"));
-
 require("./registration-view.scss");
 
 var _reactRouterDom = require("react-router-dom");
@@ -45687,7 +45685,7 @@ function RegistrationView() {
     });
   };
 
-  return _react.default.createElement(_reactRouterDom.BrowserRouter, null, _react.default.createElement("div", null, _react.default.createElement(_navbar.default, null), _react.default.createElement(_Container.default, {
+  return _react.default.createElement(_reactRouterDom.BrowserRouter, null, _react.default.createElement("div", null, _react.default.createElement(_Container.default, {
     className: "registrationContainer"
   }, _react.default.createElement("h1", null, "Create account"), _react.default.createElement(_Form.default, {
     className: "registrationForm"
@@ -45749,7 +45747,7 @@ function RegistrationView() {
     variant: "secondary"
   }, "Log In")))))));
 }
-},{"react":"../node_modules/react/index.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Container":"../node_modules/react-bootstrap/esm/Container.js","axios":"../node_modules/axios/index.js","../navbar/navbar":"components/navbar/navbar.jsx","./registration-view.scss":"components/registration-view/registration-view.scss","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js"}],"../node_modules/react-bootstrap/esm/divWithClassName.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Container":"../node_modules/react-bootstrap/esm/Container.js","axios":"../node_modules/axios/index.js","./registration-view.scss":"components/registration-view/registration-view.scss","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js"}],"../node_modules/react-bootstrap/esm/divWithClassName.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -46043,9 +46041,40 @@ function (_React$Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(DirectorView).call(this));
     _this.state = {};
     return _this;
-  }
+  } // Get Directors request function add HERE
+
 
   _createClass(DirectorView, [{
+    key: "getDirectors",
+    value: function getDirectors(token) {
+      var _this2 = this;
+
+      axios.get('https://worldwide-movie-reference.herokuapp.com/directors', {
+        headers: {
+          Authorization: "Bearer ".concat(token)
+        }
+      }).then(function (response) {
+        // Assign the result to the state
+        _this2.setState({
+          directors: response.data
+        });
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var accessToken = localStorage.getItem('token');
+
+      if (accessToken !== null) {
+        this.setState({
+          user: localStorage.getItem('user')
+        });
+        this.getDirectors(accessToken);
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
       var director = this.props.director;
@@ -46233,7 +46262,7 @@ function (_React$Component) {
       }).then(function (response) {
         console.log(response);
         alert('Movie has been added to list of favourites');
-      }).catch(function (event) {
+      }).catch(function (error) {
         console.log('error adding movie to list');
         alert('Something went wrong');
       });
@@ -46526,14 +46555,17 @@ function (_React$Component) {
 
   }, {
     key: "deleteFromFaveList",
-    value: function deleteFromFaveList(movieId) {
-      _axios.default.delete("https://worldwide-movie-reference.herokuapp.com/users/".concat(localStorage.getItem('user'), "/movies/").concat(movieId), {
+    value: function deleteFromFaveList(event) {
+      var movie = this.props; // event.preventDefault();
+
+      _axios.default.delete("https://worldwide-movie-reference.herokuapp.com/users/".concat(localStorage.getItem('user'), "/movies/").concat(movie._id), {
         Username: localStorage.getItem('user')
       }, {
         headers: {
           Authorization: "Bearer: ".concat(localStorage.getItem('token'))
         }
       }).then(function (response) {
+        console.log(response);
         alert('Movie was successfully deleted from favourite list');
       }).catch(function (error) {
         alert('Something went wrong. ' + error);
@@ -46553,23 +46585,26 @@ function (_React$Component) {
       var movies = this.props.movies;
       var favouriteList = movies.filter(function (movie) {
         return favouriteMovies.includes(movie._id);
-      }); // console.log(favouritesList);
-
+      });
       return _react.default.createElement(_Card.default, null, _react.default.createElement(_Card.default.Body, null, _react.default.createElement(_Card.default.Title, null, name), _react.default.createElement(_ListGroup.default, null, _react.default.createElement(_ListGroup.default.Item, null, "Username: ", username), _react.default.createElement(_ListGroup.default.Item, null, "Password: ******"), _react.default.createElement(_ListGroup.default.Item, null, "Email: ", email), _react.default.createElement(_ListGroup.default.Item, null, "Date of Birth: ", birthday && birthday.slice(0, 10)), _react.default.createElement(_ListGroup.default.Item, null, "Favourite Movies:", _react.default.createElement("div", null, favouriteMovies.length === 0 && _react.default.createElement("div", {
         className: "value"
-      }, "No Favourite Movies have been added"), favouriteMovies.length > 0 && _react.default.createElement("ul", null, favouriteList.map(function (movie) {
+      }, "List is empty"), favouriteMovies.length > 0 && _react.default.createElement("ul", null, favouriteList.map(function (movie) {
         return _react.default.createElement("li", {
           key: movie._id
-        }, _react.default.createElement("span", null, _react.default.createElement(_button.default, {
-          onClick: function onClick(event) {
-            return _this3.deleteFromFaveList(movie._id);
-          }
-        }, "Remove"), _react.default.createElement(_reactRouterDom.Link, {
+        }, _react.default.createElement("span", null, _react.default.createElement(_reactRouterDom.Link, {
           to: "/movies/".concat(movie._id)
         }, _react.default.createElement("h5", {
           className: "movie-link link"
-        }, movie.title))));
-      })))))));
+        }, movie.title)), _react.default.createElement(_button.default, {
+          onClick: function onClick(event) {
+            return _this3.deleteFromFaveList(event);
+          }
+        }, "Remove")));
+      }))))), _react.default.createElement(_reactRouterDom.Link, {
+        to: "/update/".concat(username)
+      }, _react.default.createElement(_button.default, {
+        className: "updateButton"
+      }, "Update Profile"))));
     }
   }]);
 
@@ -46577,7 +46612,169 @@ function (_React$Component) {
 }(_react.default.Component);
 
 exports.ProfileView = ProfileView;
-},{"react":"../node_modules/react/index.js","axios":"../node_modules/axios/index.js","react-bootstrap/button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Card":"../node_modules/react-bootstrap/esm/Card.js","react-bootstrap/ListGroup":"../node_modules/react-bootstrap/esm/ListGroup.js","./profile-view.scss":"components/profile-view/profile-view.scss","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js"}],"components/main-view/main-view.jsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","axios":"../node_modules/axios/index.js","react-bootstrap/button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Card":"../node_modules/react-bootstrap/esm/Card.js","react-bootstrap/ListGroup":"../node_modules/react-bootstrap/esm/ListGroup.js","./profile-view.scss":"components/profile-view/profile-view.scss","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js"}],"components/profile-view/profile-update.jsx":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.UpdateView = UpdateView;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _Form = _interopRequireDefault(require("react-bootstrap/Form"));
+
+var _Button = _interopRequireDefault(require("react-bootstrap/Button"));
+
+var _Container = _interopRequireDefault(require("react-bootstrap/Container"));
+
+var _axios = _interopRequireDefault(require("axios"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function UpdateView(props) {
+  var _useState = (0, _react.useState)(''),
+      _useState2 = _slicedToArray(_useState, 2),
+      name = _useState2[0],
+      updateName = _useState2[1];
+
+  var _useState3 = (0, _react.useState)(''),
+      _useState4 = _slicedToArray(_useState3, 2),
+      username = _useState4[0],
+      updateUsername = _useState4[1];
+
+  var _useState5 = (0, _react.useState)(''),
+      _useState6 = _slicedToArray(_useState5, 2),
+      password = _useState6[0],
+      updatePassword = _useState6[1];
+
+  var _useState7 = (0, _react.useState)(''),
+      _useState8 = _slicedToArray(_useState7, 2),
+      email = _useState8[0],
+      updateEmail = _useState8[1];
+
+  var _useState9 = (0, _react.useState)(''),
+      _useState10 = _slicedToArray(_useState9, 2),
+      birthday = _useState10[0],
+      updateBirthday = _useState10[1];
+
+  var user = props.user;
+
+  var handleUpdate = function handleUpdate(e) {
+    e.preventDefault(); // Send a request to the server for authentication
+
+    _axios.default.put("https://worldwide-movie-reference.herokuapp.com/users/".concat(user), {
+      name: name,
+      username: username,
+      password: password,
+      email: email,
+      birthday: birthday
+    }, {
+      headers: {
+        Authorization: "Bearer ".concat(localStorage.getItem('token'))
+      }
+    }).then(function (response) {
+      var data = response.data;
+      alert('Your profile data was successfully updated');
+      localStorage.setItem('user', data.username);
+      window.open("/users/".concat(localStorage.getItem('user')), '_self'); // The second argument is necessary so that 
+      // the page will open in the same tab
+    }).catch(function (error) {
+      alert('error updating user ' + error);
+    });
+  };
+
+  var handleDelete = function handleDelete(e) {
+    e.preventDefault();
+
+    _axios.default.delete("https://worldwide-movie-reference.herokuapp.com/users/".concat(user), {
+      headers: {
+        Authorization: "Bearer ".concat(localStorage.getItem('token'))
+      }
+    }).then(function (response) {
+      alert('Your account has been successfully deleted');
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.open('/', '_self');
+    }).catch(function (error) {
+      alert('Error deleting your account.');
+    });
+  };
+
+  return _react.default.createElement(_Container.default, {
+    className: "update-container"
+  }, _react.default.createElement("h1", null, "Update ", user, "'s account"), _react.default.createElement(_Form.default, {
+    className: "update-form"
+  }, _react.default.createElement(_Form.default.Text, null, "Please fill in all fields"), _react.default.createElement(_Form.default.Group, {
+    controlId: "form-name"
+  }, _react.default.createElement(_Form.default.Label, null, "Name"), _react.default.createElement(_Form.default.Control, {
+    type: "text",
+    placeholder: "Enter full name here",
+    value: name,
+    onChange: function onChange(e) {
+      return updateName(e.target.value);
+    }
+  })), _react.default.createElement(_Form.default.Group, {
+    controlId: "form-username"
+  }, _react.default.createElement(_Form.default.Label, null, "Username"), _react.default.createElement(_Form.default.Control, {
+    type: "text",
+    placeholder: "Username",
+    value: username,
+    onChange: function onChange(e) {
+      return updateUsername(e.target.value);
+    }
+  })), _react.default.createElement(_Form.default.Group, {
+    controlId: "form-password"
+  }, _react.default.createElement(_Form.default.Label, null, "Password:"), _react.default.createElement(_Form.default.Control, {
+    type: "text",
+    placeholder: "Password",
+    value: password,
+    onChange: function onChange(e) {
+      return updatePassword(e.target.value);
+    }
+  })), _react.default.createElement(_Form.default.Group, {
+    controlId: "form-email"
+  }, _react.default.createElement(_Form.default.Label, null, "Email"), _react.default.createElement(_Form.default.Control, {
+    type: "email",
+    placeholder: "Enter email address here",
+    value: email,
+    onChange: function onChange(e) {
+      return updateEmail(e.target.value);
+    }
+  })), _react.default.createElement(_Form.default.Group, {
+    controlId: "form-birthday"
+  }, _react.default.createElement(_Form.default.Label, null, "Date of Birth"), _react.default.createElement(_Form.default.Control, {
+    type: "date",
+    value: birthday,
+    onChange: function onChange(e) {
+      return updateBirthday(e.target.value);
+    }
+  })), _react.default.createElement(_Button.default, {
+    variant: "primary",
+    type: "submit",
+    onClick: handleUpdate
+  }, "Update")), _react.default.createElement("br", null), _react.default.createElement(_Form.default, null, _react.default.createElement(_Form.default.Group, {
+    controlId: "delete-user"
+  }, _react.default.createElement(_Form.default.Text, null, "Want to delete your account?"), _react.default.createElement(_Button.default, {
+    className: "delete-button",
+    variant: "danger",
+    type: "submit",
+    onClick: handleDelete
+  }, "Delete account"))));
+}
+},{"react":"../node_modules/react/index.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Container":"../node_modules/react-bootstrap/esm/Container.js","axios":"../node_modules/axios/index.js"}],"components/main-view/main-view.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -46608,6 +46805,8 @@ var _movieCard = require("../movie-card/movie-card");
 var _movieView = require("../movie-view/movie-view");
 
 var _profileView = require("../profile-view/profile-view");
+
+var _profileUpdate = require("../profile-view/profile-update");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -46706,8 +46905,44 @@ function (_React$Component) {
         console.log(error);
       });
     } // Get Directors request function add HERE
-    //Get Genres request function add HERE
 
+  }, {
+    key: "getDirectors",
+    value: function getDirectors(token) {
+      var _this4 = this;
+
+      _axios.default.get('https://worldwide-movie-reference.herokuapp.com/directors', {
+        headers: {
+          Authorization: "Bearer ".concat(token)
+        }
+      }).then(function (response) {
+        // Assign the result to the state
+        _this4.setState({
+          directors: response.data
+        });
+      }).catch(function (error) {
+        console.log(error);
+      });
+    } //Get Genres request function add HERE
+
+  }, {
+    key: "getGenres",
+    value: function getGenres(token) {
+      var _this5 = this;
+
+      _axios.default.get('https://worldwide-movie-reference.herokuapp.com/genres', {
+        headers: {
+          Authorization: "Bearer ".concat(token)
+        }
+      }).then(function (response) {
+        // Assign the result to the state
+        _this5.setState({
+          genres: response.data
+        });
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
@@ -46719,19 +46954,25 @@ function (_React$Component) {
         });
         this.getMovies(accessToken);
         this.getUser(accessToken);
+        this.getDirectors(accessToken);
+        this.getGenres(accessToken);
       }
     }
   }, {
     key: "render",
     value: function render() {
-      var _this4 = this;
+      var _this6 = this;
 
       // If the state isn't initialised, this will throw on runtime
       // Before the data is initially loaded
-      var userInfo = this.props.userInfo;
+      // const {} = this.props;
       var _this$state = this.state,
           user = _this$state.user,
-          movies = _this$state.movies; // Before the movies have been loaded
+          movies = _this$state.movies,
+          userInfo = _this$state.userInfo,
+          genres = _this$state.genres,
+          directors = _this$state.directors;
+      console.log(directors); // Before the movies have been loaded
 
       if (!movies) return _react.default.createElement("div", {
         className: "main-view"
@@ -46745,7 +46986,7 @@ function (_React$Component) {
       }, "Home")), _react.default.createElement(_Button.default, {
         className: "logout-button",
         onClick: function onClick() {
-          return _this4.onLoggedOut();
+          return _this6.onLoggedOut();
         }
       }, "Log Out"), _react.default.createElement(_reactRouterDom.Link, {
         to: "/users/".concat(user)
@@ -46757,7 +46998,7 @@ function (_React$Component) {
         render: function render() {
           if (!user) return _react.default.createElement(_loginView.LoginView, {
             onLoggedIn: function onLoggedIn(user) {
-              return _this4.onLoggedIn(user);
+              return _this6.onLoggedIn(user);
             }
           });
           return movies.map(function (m) {
@@ -46790,9 +47031,9 @@ function (_React$Component) {
             className: "main-view"
           });
           return _react.default.createElement(_genreView.GenreView, {
-            genre: movies.find(function (m) {
+            genre: genres.find(function (m) {
               return m.genre.name === match.params.name;
-            }).genre
+            })
           });
         }
       }), _react.default.createElement(_reactRouterDom.Route, {
@@ -46803,9 +47044,9 @@ function (_React$Component) {
             className: "main-view"
           });
           return _react.default.createElement(_directorView.DirectorView, {
-            director: movies.find(function (m) {
-              return m.director === match.params;
-            }).director
+            director: directors.find(function (m) {
+              return m.director.name === match.params.name;
+            })
           });
         }
       }), _react.default.createElement(_reactRouterDom.Route, {
@@ -46820,13 +47061,9 @@ function (_React$Component) {
       }), _react.default.createElement(_reactRouterDom.Route, {
         path: "/update/:username",
         render: function render() {
-          return _react.default.createElement(ProfileUpdate, {
-            userInfo: userInfo,
+          return _react.default.createElement(_profileUpdate.UpdateView, {
             user: user,
-            token: token,
-            updateUser: function updateUser(data) {
-              return _this4.updateUser(data);
-            }
+            userInfo: userInfo
           });
         }
       }))));
@@ -46837,7 +47074,7 @@ function (_React$Component) {
 }(_react.default.Component);
 
 exports.MainView = MainView;
-},{"react":"../node_modules/react/index.js","axios":"../node_modules/axios/index.js","react-bootstrap/Container":"../node_modules/react-bootstrap/esm/Container.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","../login-view/login-view":"components/login-view/login-view.jsx","../registration-view/registration-view":"components/registration-view/registration-view.jsx","../genre-view/genre-view":"components/genre-view/genre-view.jsx","../director-view/director-view":"components/director-view/director-view.jsx","../movie-card/movie-card":"components/movie-card/movie-card.jsx","../movie-view/movie-view":"components/movie-view/movie-view.jsx","../profile-view/profile-view":"components/profile-view/profile-view.jsx"}],"index.scss":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","axios":"../node_modules/axios/index.js","react-bootstrap/Container":"../node_modules/react-bootstrap/esm/Container.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","../login-view/login-view":"components/login-view/login-view.jsx","../registration-view/registration-view":"components/registration-view/registration-view.jsx","../genre-view/genre-view":"components/genre-view/genre-view.jsx","../director-view/director-view":"components/director-view/director-view.jsx","../movie-card/movie-card":"components/movie-card/movie-card.jsx","../movie-view/movie-view":"components/movie-view/movie-view.jsx","../profile-view/profile-view":"components/profile-view/profile-view.jsx","../profile-view/profile-update":"components/profile-view/profile-update.jsx"}],"index.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -46927,7 +47164,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49685" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58010" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

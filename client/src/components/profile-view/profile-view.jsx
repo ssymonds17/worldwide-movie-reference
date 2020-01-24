@@ -53,13 +53,16 @@ export class ProfileView extends React.Component {
 
     // Unauthorized 401 message
 
-    deleteFromFaveList(movieId) {
-        axios.delete(`https://worldwide-movie-reference.herokuapp.com/users/${localStorage.getItem('user')}/movies/${movieId}`, {
+    deleteFromFaveList(event) {
+        const movie = this.props;
+        // event.preventDefault();
+        axios.delete(`https://worldwide-movie-reference.herokuapp.com/users/${localStorage.getItem('user')}/movies/${movie._id}`, {
             Username: localStorage.getItem('user')
         }, {
             headers: { Authorization: `Bearer: ${localStorage.getItem('token')}` }
         })
             .then(response => {
+                console.log(response);
                 alert('Movie was successfully deleted from favourite list')
             })
             .catch(error => {
@@ -72,7 +75,6 @@ export class ProfileView extends React.Component {
         const { name, username, email, birthday, favouriteMovies } = this.state;
         const { movies } = this.props;
         const favouriteList = movies.filter(movie => favouriteMovies.includes(movie._id));
-        // console.log(favouritesList);
 
         return (
             <Card>
@@ -86,7 +88,7 @@ export class ProfileView extends React.Component {
                         <ListGroup.Item>Favourite Movies:
                             <div>
                                 {favouriteMovies.length === 0 &&
-                                    <div className="value">No Favourite Movies have been added</div>
+                                    <div className="value">List is empty</div>
                                 }
                                 {favouriteMovies.length > 0 &&
                                     <ul>
@@ -94,11 +96,10 @@ export class ProfileView extends React.Component {
                                             (
                                                 <li key={movie._id}>
                                                     <span>
-                                                        <Button onClick={event => this.deleteFromFaveList(movie._id)}>Remove</Button>
                                                         <Link to={`/movies/${movie._id}`}>
                                                             <h5 className="movie-link link">{movie.title}</h5>
                                                         </Link>
-
+                                                        <Button onClick={event => this.deleteFromFaveList(event)}>Remove</Button>
                                                     </span>
                                                 </li>
                                             ))}
@@ -107,6 +108,9 @@ export class ProfileView extends React.Component {
                             </div>
                         </ListGroup.Item>
                     </ListGroup>
+                    <Link to={`/update/${username}`}>
+                        <Button className="updateButton">Update Profile</Button>
+                    </Link>
                 </Card.Body>
             </Card>
         );

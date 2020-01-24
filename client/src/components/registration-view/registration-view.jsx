@@ -3,7 +3,6 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import axios from 'axios';
-import MyNavbar from '../navbar/navbar';
 import './registration-view.scss';
 
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -41,7 +40,6 @@ export function RegistrationView() {
 
     <Router>
       <div>
-        <MyNavbar />
         <Container className="registrationContainer">
           <h1>Create account</h1>
           <Form className="registrationForm">

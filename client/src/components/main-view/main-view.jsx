@@ -13,6 +13,7 @@ import { DirectorView } from '../director-view/director-view';
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 import { ProfileView } from '../profile-view/profile-view';
+import { UpdateView } from '../profile-view/profile-update';
 
 export class MainView extends React.Component {
 
@@ -79,8 +80,36 @@ export class MainView extends React.Component {
   }
 
   // Get Directors request function add HERE
+  getDirectors(token) {
+    axios.get('https://worldwide-movie-reference.herokuapp.com/directors', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(response => {
+        // Assign the result to the state
+        this.setState({
+          directors: response.data
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
 
   //Get Genres request function add HERE
+  getGenres(token) {
+    axios.get('https://worldwide-movie-reference.herokuapp.com/genres', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(response => {
+        // Assign the result to the state
+        this.setState({
+          genres: response.data
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
 
   componentDidMount() {
     let accessToken = localStorage.getItem('token');
@@ -90,14 +119,17 @@ export class MainView extends React.Component {
       });
       this.getMovies(accessToken);
       this.getUser(accessToken);
+      this.getDirectors(accessToken);
+      this.getGenres(accessToken);
     }
   }
 
   render() {
     // If the state isn't initialised, this will throw on runtime
     // Before the data is initially loaded
-    const { userInfo } = this.props;
-    const { user, movies } = this.state;
+    // const {} = this.props;
+    const { user, movies, userInfo, genres, directors } = this.state;
+    console.log(directors);
 
     // Before the movies have been loaded
     if (!movies) return <div className="main-view" />;
@@ -124,14 +156,14 @@ export class MainView extends React.Component {
             <Route path="/movies/:movieId" render={({ match }) => <MovieView movie={movies.find(m => m._id === match.params.movieId)} />} />
             <Route path="/genres/:name" render={({ match }) => {
               if (!movies) return <div className="main-view" />;
-              return <GenreView genre={movies.find(m => m.genre.name === match.params.name).genre} />
+              return <GenreView genre={genres.find(m => m.genre.name === match.params.name)} />
             }} />
             <Route path="/directors/:name" render={({ match }) => {
               if (!movies) return <div className="main-view" />;
-              return <DirectorView director={movies.find(m => m.director === match.params).director} />
+              return <DirectorView director={directors.find(m => m.director.name === match.params.name)} />
             }} />
             <Route path="/users/:username" render={() => <ProfileView user={user} userInfo={userInfo} movies={movies} />} />
-            <Route path="/update/:username" render={() => <ProfileUpdate userInfo={userInfo} user={user} token={token} updateUser={data => this.updateUser(data)} />} />
+            <Route path="/update/:username" render={() => <UpdateView user={user} userInfo={userInfo} />} />
           </div>
         </Container>
       </Router>

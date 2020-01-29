@@ -46033,22 +46033,26 @@ var DirectorView =
 function (_React$Component) {
   _inherits(DirectorView, _React$Component);
 
-  function DirectorView() {
+  function DirectorView(props) {
     var _this;
 
     _classCallCheck(this, DirectorView);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(DirectorView).call(this));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(DirectorView).call(this, props));
     _this.state = {};
     return _this;
   }
 
   _createClass(DirectorView, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      console.log('mounted');
+    }
+  }, {
     key: "render",
     value: function render() {
       var director = this.props.director;
       console.log(director);
-      if (!movies) return null;
       return _react.default.createElement(_Card.default, {
         className: "director-info",
         style: {
@@ -46814,9 +46818,27 @@ function (_React$Component) {
     // Call the superclass constructor
     // so React can initialise it
     _this = _possibleConstructorReturn(this, _getPrototypeOf(MainView).call(this));
+
+    _this.filteredMovie = function (movies, directors, genres, id) {
+      var movie = movies.find(function (movie) {
+        return movie._id === id;
+      });
+      var director = directors.find(function (director) {
+        return director.name === movie.director;
+      });
+      var genre = genres.find(function (genre) {
+        return genre.name === movie.genre;
+      });
+      movie.genreDetails = genre;
+      movie.directorDetails = director;
+      return movie;
+    };
+
     _this.state = {
       movies: [],
-      user: null
+      user: null,
+      directors: [],
+      genres: []
     };
     return _this;
   }
@@ -46943,11 +46965,28 @@ function (_React$Component) {
           movies = _this$state.movies,
           userInfo = _this$state.userInfo,
           genres = _this$state.genres,
-          directors = _this$state.directors; // Before the movies have been loaded
+          directors = _this$state.directors;
+      var movie; // Before the movies have been loaded
+      // if (!movies) return <div className="main-view" />;
 
-      if (!movies) return _react.default.createElement("div", {
-        className: "main-view"
-      });
+      if (movies.length > 0 && directors.length > 0 && genres.length > 0 && this.props.match) {
+        movie = movies.find(function (movie) {
+          return movie._id === match.params.movieId;
+        });
+
+        var _director = directors.find(function (director) {
+          return director.name === movie.director;
+        });
+
+        movie.directorDetails = _director;
+
+        var _genre = genres.find(function (genre) {
+          return genre.name === movie.genre;
+        });
+
+        movie.genreDetails = _genre;
+      }
+
       return _react.default.createElement(_reactRouterDom.BrowserRouter, null, _react.default.createElement(_Container.default, {
         className: "main-view"
       }, _react.default.createElement("div", null, _react.default.createElement(_reactRouterDom.Link, {
@@ -46989,35 +47028,34 @@ function (_React$Component) {
         render: function render(_ref) {
           var match = _ref.match;
           return _react.default.createElement(_movieView.MovieView, {
-            movie: movies.find(function (m) {
-              return m._id === match.params.movieId;
-            })
+            movie: _this6.filteredMovie(movies, directors, genres, match.params.movieId)
           });
         }
       }), _react.default.createElement(_reactRouterDom.Route, {
         path: "/genres/:name",
         render: function render(_ref2) {
           var match = _ref2.match;
-          if (!movies) return _react.default.createElement("div", {
+          if (!!movies.length && !!genres.length) return _react.default.createElement("div", {
             className: "main-view"
           });
+          genre = _this6.filteredMovie(movies, genres, match.params.movieId);
+          console.log(genre);
           return _react.default.createElement(_genreView.GenreView, {
-            genre: genres.find(function (movie) {
-              return movie.genre === match.params.name;
-            }).genre
+            genre: genre.genreDetails,
+            movies: movies
           });
         }
       }), _react.default.createElement(_reactRouterDom.Route, {
         path: "/directors/:name",
         render: function render(_ref3) {
           var match = _ref3.match;
-          if (!movies) return _react.default.createElement("div", {
+          if (!!movies.length && !!directors.length) return _react.default.createElement("div", {
             className: "main-view"
           });
+          director = _this6.filteredMovie(movies, directors, match.params.movieId);
+          console.log(director);
           return _react.default.createElement(_directorView.DirectorView, {
-            director: directors.find(function (movie) {
-              return movie.director === match.params.name;
-            }).director,
+            director: director.directorDetails,
             movies: movies
           });
         }

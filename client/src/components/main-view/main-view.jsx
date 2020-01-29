@@ -25,6 +25,8 @@ export class MainView extends React.Component {
     this.state = {
       movies: [],
       user: null,
+      directors: [],
+      genres: []
     };
   }
 
@@ -123,14 +125,32 @@ export class MainView extends React.Component {
     }
   }
 
+  filteredMovie = (movies, directors, genres, id) => {
+    let movie = movies.find(movie => movie._id === id);
+    const director = directors.find(director => director.name === movie.director);
+    const genre = genres.find(genre => genre.name === movie.genre);
+    movie.genreDetails = genre;
+    movie.directorDetails = director;
+    return movie;
+  }
+
   render() {
     // If the state isn't initialised, this will throw on runtime
     // Before the data is initially loaded
     // const {} = this.props;
     const { user, movies, userInfo, genres, directors } = this.state;
 
+    let movie
     // Before the movies have been loaded
-    if (!movies) return <div className="main-view" />;
+    // if (!movies) return <div className="main-view" />;
+    if (movies.length > 0 && directors.length > 0 && genres.length > 0 && this.props.match) {
+
+      movie = movies.find(movie => movie._id === match.params.movieId);
+      const director = directors.find(director => director.name === movie.director);
+      movie.directorDetails = director;
+      const genre = genres.find(genre => genre.name === movie.genre);
+      movie.genreDetails = genre;
+    }
 
     return (
       <Router>
@@ -151,15 +171,29 @@ export class MainView extends React.Component {
             }
             } />
             <Route path="/register" render={() => <RegistrationView />} />
-            <Route path="/movies/:movieId" render={({ match }) => <MovieView movie={movies.find(m => m._id === match.params.movieId)} />} />
-            <Route path="/genres/:name" render={({ match }) => {
+            <Route path="/movies/:movieId" render={({ match }) => {
+              return <MovieView movie={this.filteredMovie(movies, directors, genres, match.params.movieId)} />
+            }
+            } />
+            {/* <Route path="/genres/:name" render={({ match }) => {
               if (!movies) return <div className="main-view" />;
               return <GenreView genre={genres.find(movie => movie.genre === match.params.name).genre} />
-            }} />
+            }} /> */}
+            <Route path="/genres/:name" render={({ match }) => {
+              if (!!movies.length && !!genres.length) return <div className="main-view" />;
+              genre = this.filteredMovie(movies, genres, match.params.movieId)
+              console.log(genre);
+              return <GenreView genre={genre.genreDetails} movies={movies} />
+            }
+            } />
             <Route path="/directors/:name" render={({ match }) => {
-              if (!movies) return <div className="main-view" />;
-              return <DirectorView director={directors.find(movie => movie.director === match.params.name).director} movies={movies} />
-            }} />
+              if (!!movies.length && !!directors.length) return <div className="main-view" />;
+              director = this.filteredMovie(movies, directors, match.params.movieId)
+              console.log(director);
+              return <DirectorView director={director.directorDetails} movies={movies} />
+            }
+            } />
+            {/* <Route path="/directors" render  */}
             <Route path="/users/:username" render={() => <ProfileView user={user} userInfo={userInfo} movies={movies} />} />
             <Route path="/update/:username" render={() => <UpdateView user={user} userInfo={userInfo} />} />
           </div>

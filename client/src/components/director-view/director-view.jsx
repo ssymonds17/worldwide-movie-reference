@@ -8,15 +8,18 @@ import { Link } from 'react-router-dom';
 
 export class DirectorView extends React.Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {};
+    }
+
+    componentDidMount() {
+        console.log('mounted');
     }
 
     render() {
         const { director } = this.props;
         console.log(director);
-        if (!movies) return null;
 
         return (
             <Card className="director-info" style={{ width: '18rem' }}>

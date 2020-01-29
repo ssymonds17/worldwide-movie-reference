@@ -29,7 +29,6 @@ export class MainView extends React.Component {
   }
 
   onLoggedIn(authData) {
-    // console.log(authData);
     this.setState({
       user: authData.user.username
     });
@@ -129,7 +128,6 @@ export class MainView extends React.Component {
     // Before the data is initially loaded
     // const {} = this.props;
     const { user, movies, userInfo, genres, directors } = this.state;
-    console.log(directors);
 
     // Before the movies have been loaded
     if (!movies) return <div className="main-view" />;
@@ -156,11 +154,11 @@ export class MainView extends React.Component {
             <Route path="/movies/:movieId" render={({ match }) => <MovieView movie={movies.find(m => m._id === match.params.movieId)} />} />
             <Route path="/genres/:name" render={({ match }) => {
               if (!movies) return <div className="main-view" />;
-              return <GenreView genre={genres.find(m => m.genre.name === match.params.name)} />
+              return <GenreView genre={genres.find(movie => movie.genre === match.params.name).genre} />
             }} />
             <Route path="/directors/:name" render={({ match }) => {
               if (!movies) return <div className="main-view" />;
-              return <DirectorView director={directors.find(m => m.director.name === match.params.name)} />
+              return <DirectorView director={directors.find(movie => movie.director === match.params.name).director} movies={movies} />
             }} />
             <Route path="/users/:username" render={() => <ProfileView user={user} userInfo={userInfo} movies={movies} />} />
             <Route path="/update/:username" render={() => <UpdateView user={user} userInfo={userInfo} />} />

@@ -46047,6 +46047,7 @@ function (_React$Component) {
     key: "render",
     value: function render() {
       var director = this.props.director;
+      console.log(director);
       if (!movies) return null;
       return _react.default.createElement(_Card.default, {
         className: "director-info",
@@ -46253,12 +46254,12 @@ function (_React$Component) {
         variant: "top",
         src: "http://via.placeholder.com/640x360"
       }), _react.default.createElement(_Card.default.Body, null, _react.default.createElement(_Card.default.Title, null, movie.title), _react.default.createElement(_Card.default.Text, null, movie.year), _react.default.createElement(_Card.default.Text, null, "Description: ", movie.description), _react.default.createElement(_Card.default.Text, null, "Run Time: ", movie.length, " minutes"), _react.default.createElement(_Card.default.Text, null, "Genre:", _react.default.createElement(_reactRouterDom.Link, {
-        to: "/genres/".concat(movie.genre.name)
+        to: "/genres/".concat(movie.genre)
       }, _react.default.createElement(_Button.default, {
         className: "genre-link-button",
         variant: "link"
       }, movie.genre))), _react.default.createElement(_Card.default.Text, null, "Director:", _react.default.createElement(_reactRouterDom.Link, {
-        to: "/directors/".concat(movie.director.name)
+        to: "/directors/".concat(movie.director)
       }, _react.default.createElement(_Button.default, {
         className: "director-link-button",
         variant: "link"
@@ -46524,14 +46525,17 @@ function (_React$Component) {
 
   }, {
     key: "deleteFromFaveList",
-    value: function deleteFromFaveList(event) {
-      var movie = this.props; // event.preventDefault();
+    value: function deleteFromFaveList(movieId) {
+      var token = localStorage.getItem('token');
+      var username = localStorage.getItem('user');
+      console.log(token);
+      console.log(username); // event.preventDefault();
 
-      _axios.default.delete("https://worldwide-movie-reference.herokuapp.com/users/".concat(localStorage.getItem('user'), "/movies/").concat(movie._id), {
-        Username: localStorage.getItem('user')
+      _axios.default.delete("https://worldwide-movie-reference.herokuapp.com/users/".concat(localStorage.getItem('user'), "/movies/").concat(movieId), {
+        Username: username
       }, {
         headers: {
-          Authorization: "Bearer: ".concat(localStorage.getItem('token'))
+          Authorization: "Bearer: ".concat(token)
         }
       }).then(function (response) {
         console.log(response);
@@ -46565,8 +46569,8 @@ function (_React$Component) {
         }, _react.default.createElement("h5", {
           className: "movie-link link"
         }, movie.title)), _react.default.createElement(_button.default, {
-          onClick: function onClick(event) {
-            return _this3.deleteFromFaveList(event);
+          onClick: function onClick(e) {
+            return _this3.deleteFromFaveList(movie._id);
           }
         }, "Remove")));
       }))))), _react.default.createElement(_reactRouterDom.Link, {
@@ -46614,32 +46618,32 @@ function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) ||
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function UpdateView(props) {
-  var _useState = (0, _react.useState)(''),
+  var user = props.user;
+
+  var _useState = (0, _react.useState)(user.name !== null ? user.name : ''),
       _useState2 = _slicedToArray(_useState, 2),
       name = _useState2[0],
       updateName = _useState2[1];
 
-  var _useState3 = (0, _react.useState)(''),
+  var _useState3 = (0, _react.useState)(user.username !== null ? user.name : ''),
       _useState4 = _slicedToArray(_useState3, 2),
       username = _useState4[0],
       updateUsername = _useState4[1];
 
-  var _useState5 = (0, _react.useState)(''),
+  var _useState5 = (0, _react.useState)(user.password !== null ? user.name : ''),
       _useState6 = _slicedToArray(_useState5, 2),
       password = _useState6[0],
       updatePassword = _useState6[1];
 
-  var _useState7 = (0, _react.useState)(''),
+  var _useState7 = (0, _react.useState)(user.email !== null ? user.name : ''),
       _useState8 = _slicedToArray(_useState7, 2),
       email = _useState8[0],
       updateEmail = _useState8[1];
 
-  var _useState9 = (0, _react.useState)(''),
+  var _useState9 = (0, _react.useState)(user.birthday !== null ? user.name : ''),
       _useState10 = _slicedToArray(_useState9, 2),
       birthday = _useState10[0],
       updateBirthday = _useState10[1];
-
-  var user = props.user;
 
   var handleUpdate = function handleUpdate(e) {
     e.preventDefault(); // Send a request to the server for authentication
@@ -46820,7 +46824,6 @@ function (_React$Component) {
   _createClass(MainView, [{
     key: "onLoggedIn",
     value: function onLoggedIn(authData) {
-      // console.log(authData);
       this.setState({
         user: authData.user.username
       });
@@ -46940,8 +46943,7 @@ function (_React$Component) {
           movies = _this$state.movies,
           userInfo = _this$state.userInfo,
           genres = _this$state.genres,
-          directors = _this$state.directors;
-      console.log(directors); // Before the movies have been loaded
+          directors = _this$state.directors; // Before the movies have been loaded
 
       if (!movies) return _react.default.createElement("div", {
         className: "main-view"
@@ -47000,9 +47002,9 @@ function (_React$Component) {
             className: "main-view"
           });
           return _react.default.createElement(_genreView.GenreView, {
-            genre: genres.find(function (m) {
-              return m.genre.name === match.params.name;
-            })
+            genre: genres.find(function (movie) {
+              return movie.genre === match.params.name;
+            }).genre
           });
         }
       }), _react.default.createElement(_reactRouterDom.Route, {
@@ -47013,9 +47015,10 @@ function (_React$Component) {
             className: "main-view"
           });
           return _react.default.createElement(_directorView.DirectorView, {
-            director: directors.find(function (m) {
-              return m.director.name === match.params.name;
-            })
+            director: directors.find(function (movie) {
+              return movie.director === match.params.name;
+            }).director,
+            movies: movies
           });
         }
       }), _react.default.createElement(_reactRouterDom.Route, {
@@ -47133,7 +47136,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58010" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50326" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

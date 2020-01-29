@@ -5,13 +5,14 @@ import Container from 'react-bootstrap/Container';
 import axios from 'axios';
 
 export function UpdateView(props) {
-  const [name, updateName] = useState('');
-  const [username, updateUsername] = useState('');
-  const [password, updatePassword] = useState('');
-  const [email, updateEmail] = useState('');
-  const [birthday, updateBirthday] = useState('');
-
   const { user } = props;
+
+  const [name, updateName] = useState(user.name !== null ? user.name : '');
+  const [username, updateUsername] = useState(user.username !== null ? user.name : '');
+  const [password, updatePassword] = useState(user.password !== null ? user.name : '');
+  const [email, updateEmail] = useState(user.email !== null ? user.name : '');
+  const [birthday, updateBirthday] = useState(user.birthday !== null ? user.name : '');
+
 
   const handleUpdate = (e) => {
     e.preventDefault();

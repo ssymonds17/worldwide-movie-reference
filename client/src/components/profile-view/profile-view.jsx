@@ -53,13 +53,16 @@ export class ProfileView extends React.Component {
 
     // Unauthorized 401 message
 
-    deleteFromFaveList(event) {
-        const movie = this.props;
+    deleteFromFaveList(movieId) {
+        let token = localStorage.getItem('token');
+        let username = localStorage.getItem('user');
+        console.log(token);
+        console.log(username);
         // event.preventDefault();
-        axios.delete(`https://worldwide-movie-reference.herokuapp.com/users/${localStorage.getItem('user')}/movies/${movie._id}`, {
-            Username: localStorage.getItem('user')
+        axios.delete(`https://worldwide-movie-reference.herokuapp.com/users/${localStorage.getItem('user')}/movies/${movieId}`, {
+            Username: username
         }, {
-            headers: { Authorization: `Bearer: ${localStorage.getItem('token')}` }
+            headers: { Authorization: `Bearer: ${token}` }
         })
             .then(response => {
                 console.log(response);
@@ -99,7 +102,7 @@ export class ProfileView extends React.Component {
                                                         <Link to={`/movies/${movie._id}`}>
                                                             <h5 className="movie-link link">{movie.title}</h5>
                                                         </Link>
-                                                        <Button onClick={event => this.deleteFromFaveList(event)}>Remove</Button>
+                                                        <Button onClick={e => this.deleteFromFaveList(movie._id)}>Remove</Button>
                                                     </span>
                                                 </li>
                                             ))}
@@ -116,3 +119,4 @@ export class ProfileView extends React.Component {
         );
     }
 }
+

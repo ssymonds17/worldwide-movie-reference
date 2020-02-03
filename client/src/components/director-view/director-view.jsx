@@ -24,8 +24,8 @@ export class DirectorView extends React.Component {
         return (
             <Card className="director-info" style={{ width: '18rem' }}>
                 <Card.Body>
-                    <Card.Title className="director-name">{director.name}</Card.Title>
-                    <Card.Text>Description: {director.description}</Card.Text>
+                    <Card.Title className="director-name">{director[0].name}</Card.Title>
+                    <Card.Text>Description: {director[0].bio}</Card.Text>
                     <div>
                         <Link to={`/`}>
                             <Button variant="outline-secondary" className="back-button">Back</Button>

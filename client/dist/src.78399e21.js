@@ -45964,7 +45964,6 @@ function (_React$Component) {
     key: "render",
     value: function render() {
       var genre = this.props.genre;
-      if (!genre) return null;
       return _react.default.createElement(_Card.default, {
         className: "genre-info",
         style: {
@@ -45972,7 +45971,7 @@ function (_React$Component) {
         }
       }, _react.default.createElement(_Card.default.Body, null, _react.default.createElement(_Card.default.Title, {
         className: "genre-name"
-      }, genre.name), _react.default.createElement(_Card.default.Text, null, "Description: ", genre.description), _react.default.createElement("div", null, _react.default.createElement(_reactRouterDom.Link, {
+      }, genre[0].name), _react.default.createElement(_Card.default.Text, null, "Description: ", genre[0].description), _react.default.createElement("div", null, _react.default.createElement(_reactRouterDom.Link, {
         to: "/"
       }, _react.default.createElement(_Button.default, {
         variant: "outline-secondary",
@@ -46060,7 +46059,7 @@ function (_React$Component) {
         }
       }, _react.default.createElement(_Card.default.Body, null, _react.default.createElement(_Card.default.Title, {
         className: "director-name"
-      }, director.name), _react.default.createElement(_Card.default.Text, null, "Description: ", director.description), _react.default.createElement("div", null, _react.default.createElement(_reactRouterDom.Link, {
+      }, director[0].name), _react.default.createElement(_Card.default.Text, null, "Description: ", director[0].bio), _react.default.createElement("div", null, _react.default.createElement(_reactRouterDom.Link, {
         to: "/"
       }, _react.default.createElement(_Button.default, {
         variant: "outline-secondary",
@@ -46225,16 +46224,17 @@ function (_React$Component) {
     key: "addToFaveList",
     value: function addToFaveList(event) {
       var movie = this.props.movie;
+      var token = localStorage.getItem('token');
       event.preventDefault();
 
       _axios.default.post("https://worldwide-movie-reference.herokuapp.com/users/".concat(localStorage.getItem('user'), "/movies/").concat(movie._id), {
         Username: localStorage.getItem('user')
       }, {
         headers: {
-          Authorization: "Bearer ".concat(localStorage.getItem('token'))
+          Authorization: "Bearer ".concat(token)
         }
       }).then(function (response) {
-        console.log(response);
+        console.log(token);
         alert('Movie has been added to list of favourites');
       }).catch(function (error) {
         console.log('error adding movie to list');
@@ -46530,21 +46530,19 @@ function (_React$Component) {
   }, {
     key: "deleteFromFaveList",
     value: function deleteFromFaveList(movieId) {
-      var token = localStorage.getItem('token');
       var username = localStorage.getItem('user');
-      console.log(token);
-      console.log(username); // event.preventDefault();
+      var token = localStorage.getItem('token');
+      event.preventDefault();
 
-      _axios.default.delete("https://worldwide-movie-reference.herokuapp.com/users/".concat(localStorage.getItem('user'), "/movies/").concat(movieId), {
-        Username: username
-      }, {
+      _axios.default.delete("https://worldwide-movie-reference.herokuapp.com/users/".concat(username, "/movies/").concat(movieId), {
         headers: {
-          Authorization: "Bearer: ".concat(token)
+          Authorization: "Bearer ".concat(token)
         }
       }).then(function (response) {
-        console.log(response);
-        alert('Movie was successfully deleted from favourite list');
+        console.log(token);
+        alert('Movie has been removed from list of favourites');
       }).catch(function (error) {
+        console.log('error removing movie from list');
         alert('Something went wrong. ' + error);
       });
     }
@@ -46973,18 +46971,14 @@ function (_React$Component) {
         movie = movies.find(function (movie) {
           return movie._id === match.params.movieId;
         });
-
-        var _director = directors.find(function (director) {
+        var director = directors.find(function (director) {
           return director.name === movie.director;
         });
-
-        movie.directorDetails = _director;
-
-        var _genre = genres.find(function (genre) {
+        movie.directorDetails = director;
+        var genre = genres.find(function (genre) {
           return genre.name === movie.genre;
         });
-
-        movie.genreDetails = _genre;
+        movie.genreDetails = genre;
       }
 
       return _react.default.createElement(_reactRouterDom.BrowserRouter, null, _react.default.createElement(_Container.default, {
@@ -47019,11 +47013,13 @@ function (_React$Component) {
           });
         }
       }), _react.default.createElement(_reactRouterDom.Route, {
+        exact: true,
         path: "/register",
         render: function render() {
           return _react.default.createElement(_registrationView.RegistrationView, null);
         }
       }), _react.default.createElement(_reactRouterDom.Route, {
+        exact: true,
         path: "/movies/:movieId",
         render: function render(_ref) {
           var match = _ref.match;
@@ -47035,13 +47031,13 @@ function (_React$Component) {
         path: "/genres/:name",
         render: function render(_ref2) {
           var match = _ref2.match;
-          if (!!movies.length && !!genres.length) return _react.default.createElement("div", {
+          if (!genres) return _react.default.createElement("div", {
             className: "main-view"
           });
-          genre = _this6.filteredMovie(movies, genres, match.params.movieId);
-          console.log(genre);
           return _react.default.createElement(_genreView.GenreView, {
-            genre: genre.genreDetails,
+            genre: genres.filter(function (genre) {
+              return genre.name == match.params.name;
+            }),
             movies: movies
           });
         }
@@ -47049,13 +47045,13 @@ function (_React$Component) {
         path: "/directors/:name",
         render: function render(_ref3) {
           var match = _ref3.match;
-          if (!!movies.length && !!directors.length) return _react.default.createElement("div", {
+          if (!directors) return _react.default.createElement("div", {
             className: "main-view"
           });
-          director = _this6.filteredMovie(movies, directors, match.params.movieId);
-          console.log(director);
           return _react.default.createElement(_directorView.DirectorView, {
-            director: director.directorDetails,
+            director: directors.filter(function (director) {
+              return director.name == match.params.name;
+            }),
             movies: movies
           });
         }

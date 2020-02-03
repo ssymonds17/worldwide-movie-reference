@@ -2,9 +2,9 @@ import React from 'react';
 import axios from 'axios';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
-import { Link } from 'react-router-dom';
 
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+
 
 import { LoginView } from '../login-view/login-view';
 import { RegistrationView } from '../registration-view/registration-view';
@@ -170,30 +170,21 @@ export class MainView extends React.Component {
               return movies.map(m => <MovieCard key={m._id} movie={m} />)
             }
             } />
-            <Route path="/register" render={() => <RegistrationView />} />
-            <Route path="/movies/:movieId" render={({ match }) => {
+            <Route exact path="/register" render={() => <RegistrationView />} />
+            <Route exact path="/movies/:movieId" render={({ match }) => {
               return <MovieView movie={this.filteredMovie(movies, directors, genres, match.params.movieId)} />
             }
             } />
-            {/* <Route path="/genres/:name" render={({ match }) => {
-              if (!movies) return <div className="main-view" />;
-              return <GenreView genre={genres.find(movie => movie.genre === match.params.name).genre} />
-            }} /> */}
             <Route path="/genres/:name" render={({ match }) => {
-              if (!!movies.length && !!genres.length) return <div className="main-view" />;
-              genre = this.filteredMovie(movies, genres, match.params.movieId)
-              console.log(genre);
-              return <GenreView genre={genre.genreDetails} movies={movies} />
-            }
-            } />
+              if (!genres) return <div className="main-view" />;
+              return <GenreView genre={genres.filter(genre => genre.name == match.params.name)} movies={movies} />
+            }}
+            />
             <Route path="/directors/:name" render={({ match }) => {
-              if (!!movies.length && !!directors.length) return <div className="main-view" />;
-              director = this.filteredMovie(movies, directors, match.params.movieId)
-              console.log(director);
-              return <DirectorView director={director.directorDetails} movies={movies} />
+              if (!directors) return <div className="main-view" />;
+              return <DirectorView director={directors.filter(director => director.name == match.params.name)} movies={movies} />
             }
             } />
-            {/* <Route path="/directors" render  */}
             <Route path="/users/:username" render={() => <ProfileView user={user} userInfo={userInfo} movies={movies} />} />
             <Route path="/update/:username" render={() => <UpdateView user={user} userInfo={userInfo} />} />
           </div>

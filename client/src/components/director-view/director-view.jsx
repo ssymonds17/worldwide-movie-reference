@@ -13,10 +13,6 @@ export class DirectorView extends React.Component {
         this.state = {};
     }
 
-    componentDidMount() {
-        console.log('mounted');
-    }
-
     render() {
         const { director } = this.props;
         console.log(director);
@@ -24,8 +20,9 @@ export class DirectorView extends React.Component {
         return (
             <Card className="director-info" style={{ width: '18rem' }}>
                 <Card.Body>
-                    <Card.Title className="director-name">{director[0].name}</Card.Title>
-                    <Card.Text>Description: {director[0].bio}</Card.Text>
+                    <Card.Title className="director-name">{director.name}</Card.Title>
+                    <Card.Text>Description: {director.bio}</Card.Text>
+                    <Card.Text>Year of Birth: {director.birthYear}</Card.Text>
                     <div>
                         <Link to={`/`}>
                             <Button variant="outline-secondary" className="back-button">Back</Button>
@@ -36,3 +33,22 @@ export class DirectorView extends React.Component {
         )
     }
 }
+
+// (WIP)
+// export function DirectorView(props) {
+//     const director = directors.filter(director => director.name == match.params.name)
+
+//     return (
+//         <Card className="director-info" style={{ width: '18rem' }}>
+//             <Card.Body>
+//                 <Card.Title className="director-name">{director.name}</Card.Title>
+//                 <Card.Text>Description: {director.bio}</Card.Text>
+//                 <div>
+//                     <Link to={`/`}>
+//                         <Button variant="outline-secondary" className="back-button">Back</Button>
+//                     </Link>
+//                 </div>
+//             </Card.Body>
+//         </Card>
+//     )
+// }

@@ -16,14 +16,15 @@ export class MovieView extends React.Component {
 
   addToFaveList(event) {
     const { movie } = this.props;
+    const token = localStorage.getItem('token');
     event.preventDefault();
     axios.post(`https://worldwide-movie-reference.herokuapp.com/users/${localStorage.getItem('user')}/movies/${movie._id}`, {
       Username: localStorage.getItem('user')
     }, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
-        console.log(response);
+        console.log(token);
         alert('Movie has been added to list of favourites');
       })
       .catch(error => {

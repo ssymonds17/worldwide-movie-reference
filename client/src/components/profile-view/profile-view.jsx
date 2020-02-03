@@ -54,24 +54,22 @@ export class ProfileView extends React.Component {
     // Unauthorized 401 message
 
     deleteFromFaveList(movieId) {
-        let token = localStorage.getItem('token');
         let username = localStorage.getItem('user');
-        console.log(token);
-        console.log(username);
-        // event.preventDefault();
-        axios.delete(`https://worldwide-movie-reference.herokuapp.com/users/${localStorage.getItem('user')}/movies/${movieId}`, {
-            Username: username
-        }, {
-            headers: { Authorization: `Bearer: ${token}` }
+        let token = localStorage.getItem('token');
+        event.preventDefault();
+        axios.delete(`https://worldwide-movie-reference.herokuapp.com/users/${username}/movies/${movieId}`, {
+            headers: { Authorization: `Bearer ${token}` }
         })
             .then(response => {
-                console.log(response);
-                alert('Movie was successfully deleted from favourite list')
+                console.log(token);
+                alert('Movie has been removed from list of favourites');
             })
             .catch(error => {
+                console.log('error removing movie from list');
                 alert('Something went wrong. ' + error);
             });
-    }
+    };
+
 
     render() {
 

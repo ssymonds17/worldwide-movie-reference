@@ -7,6 +7,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import './profile-view.scss';
 
 import { Link } from 'react-router-dom';
+import { connect } from 'tls';
 
 export class ProfileView extends React.Component {
 
@@ -117,4 +118,3 @@ export class ProfileView extends React.Component {
         );
     }
 }
-

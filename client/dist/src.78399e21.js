@@ -49225,14 +49225,12 @@ function (_React$Component) {
           src: movie.imagePath
         }), _react.default.createElement(_Card.default.Body, {
           className: "movie-card-body"
-        }, _react.default.createElement(_Card.default.Title, null, movie.title), _react.default.createElement(_reactRouterDom.Link, {
-          to: "/movies/".concat(movie._id)
-        }, _react.default.createElement(_button.default, {
+        }, _react.default.createElement(_Card.default.Title, null, movie.title), _react.default.createElement(_button.default, {
           className: "justify-content-center",
           onClick: function onClick(e) {
             return _this3.deleteFromFaveList(movie._id);
           }
-        }, "Remove")))));
+        }, "Remove"))));
       })))));
     }
   }]);

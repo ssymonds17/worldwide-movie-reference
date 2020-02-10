@@ -8,6 +8,7 @@ import axios from 'axios';
 import './registration-view.scss';
 
 import { BrowserRouter as Router } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 export function RegistrationView() {
@@ -75,7 +76,9 @@ export function RegistrationView() {
               <Form.Group controlId="new-user">
                 <Form.Label className="text-center mb-3">Already a member?</Form.Label>
                 <br />
-                <Button href="/client" variant="secondary">Log In</Button>
+                <Link to={`/`}>
+                  <Button variant="secondary">Log In</Button>
+                </Link>
               </Form.Group>
             </Form>
           </Col>

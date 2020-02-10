@@ -48585,7 +48585,6 @@ function (_React$Component) {
     key: "render",
     value: function render() {
       var genre = this.props.genre;
-      console.log(genre);
       return _react.default.createElement("div", {
         className: "genre-view-container mt-5"
       }, _react.default.createElement("h1", null, genre.name), _react.default.createElement(_Media.default, {
@@ -48686,7 +48685,6 @@ function (_React$Component) {
     key: "render",
     value: function render() {
       var director = this.props.director;
-      console.log(director);
       return _react.default.createElement("div", {
         className: "director-view-container mt-5"
       }, _react.default.createElement("h1", null, director.name), _react.default.createElement(_Media.default, {
@@ -49648,8 +49646,7 @@ function (_React$Component) {
           });
         }
       }), _react.default.createElement(_reactRouterDom.Route, {
-        exact: true,
-        path: "/register",
+        exact: "/client/register",
         render: function render() {
           return _react.default.createElement(_registrationView.RegistrationView, null);
         }
@@ -49690,14 +49687,14 @@ function (_React$Component) {
           });
         }
       }), _react.default.createElement(_reactRouterDom.Route, {
-        path: "/users/:username",
+        path: "/client/users/:username",
         render: function render() {
           return _react.default.createElement(_profileView.ProfileView, {
             movies: movies
           });
         }
       }), _react.default.createElement(_reactRouterDom.Route, {
-        path: "/update/:username",
+        path: "/client/update/:username",
         render: function render() {
           return _react.default.createElement(_profileUpdate.UpdateView, {
             user: user

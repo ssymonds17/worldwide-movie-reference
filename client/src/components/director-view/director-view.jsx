@@ -17,7 +17,6 @@ export class DirectorView extends React.Component {
 
     render() {
         const { director } = this.props;
-        console.log(director);
 
         return (
             <div className="director-view-container mt-5">

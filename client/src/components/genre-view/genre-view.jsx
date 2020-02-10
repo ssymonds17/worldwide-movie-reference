@@ -17,7 +17,6 @@ export class GenreView extends React.Component {
 
   render() {
     const { genre } = this.props;
-    console.log(genre);
 
     return (
       <div className="genre-view-container mt-5">

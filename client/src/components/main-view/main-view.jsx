@@ -124,7 +124,7 @@ export class MainView extends React.Component {
             }
             } />
 
-            <Route exact path="/register" render={() => <RegistrationView />} />
+            <Route exact="/client/register" render={() => <RegistrationView />} />
 
             <Route path="/movies/:movieId" render={({ match }) => <MovieView movie={movies.find(movie => movie._id === match.params.movieId)} />} />
 
@@ -139,9 +139,9 @@ export class MainView extends React.Component {
             }
             } />
 
-            <Route path="/users/:username" render={() => <ProfileView movies={movies} />} />
+            <Route path="/client/users/:username" render={() => <ProfileView movies={movies} />} />
 
-            <Route path="/update/:username" render={() => <UpdateView user={user} />} />
+            <Route path="/client/update/:username" render={() => <UpdateView user={user} />} />
           </div>
         </Container>
       </Router>

@@ -101,11 +101,15 @@ export class MainView extends React.Component {
           <div>
             <Navbar className="navbarContainer mb-5" bg="primary" expand="md" fixed="top">
               <Navbar.Brand className="nav-brand" href="/">WorldWide Movie Reference</Navbar.Brand>
-              <Button href={`/users/${user}`}>{user}</Button>
+              <Link to={`/users/${user}`}>{user}</Link>
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
-                  <Button className="logout-button" onClick={user => this.onLoggedOut(user)}>Log Out</Button>
-                  <Button href="/register">Register</Button>
+                  <Link to={`/`}>
+                    <Button className="logout-button" type="primary" onClick={user => this.onLoggedOut(user)}>Log Out</Button>
+                  </Link>
+                  <Link to={`/register`}>
+                    <Button type="primary">Register</Button>
+                  </Link>
                   <NavDropdown title="Menu" id="basic-nav-dropdown">
                     <NavDropdown.Item href="#movies">Movies</NavDropdown.Item>
                     <NavDropdown.Item href="#genres">Genres</NavDropdown.Item>

@@ -49609,20 +49609,25 @@ function (_React$Component) {
       }, _react.default.createElement(_Navbar.default.Brand, {
         className: "nav-brand",
         href: "/"
-      }, "WorldWide Movie Reference"), _react.default.createElement(_Button.default, {
-        href: "/users/".concat(user)
+      }, "WorldWide Movie Reference"), _react.default.createElement(Link, {
+        to: "/users/".concat(user)
       }, user), _react.default.createElement(_Navbar.default.Collapse, {
         id: "basic-navbar-nav"
       }, _react.default.createElement(_Nav.default, {
         className: "mr-auto"
+      }, _react.default.createElement(Link, {
+        to: "/"
       }, _react.default.createElement(_Button.default, {
         className: "logout-button",
+        type: "primary",
         onClick: function onClick(user) {
           return _this4.onLoggedOut(user);
         }
-      }, "Log Out"), _react.default.createElement(_Button.default, {
-        href: "/register"
-      }, "Register"), _react.default.createElement(_NavDropdown.default, {
+      }, "Log Out")), _react.default.createElement(Link, {
+        to: "/register"
+      }, _react.default.createElement(_Button.default, {
+        type: "primary"
+      }, "Register")), _react.default.createElement(_NavDropdown.default, {
         title: "Menu",
         id: "basic-nav-dropdown"
       }, _react.default.createElement(_NavDropdown.default.Item, {

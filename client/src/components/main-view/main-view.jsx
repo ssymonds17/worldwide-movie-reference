@@ -101,7 +101,7 @@ export class MainView extends React.Component {
           <div>
             <Navbar className="navbarContainer mb-5" bg="primary" expand="md" fixed="top">
               <Link to={`/`}>
-                <Navbar.Brand className="nav-brand">WorldWide Movie Reference</Navbar.Brand>
+                <Button className="nav-brand">WorldWide Movie Reference</Button>
               </Link>
               <Link to={`/users/${user}`}>
                 <Button>{user}</Button>

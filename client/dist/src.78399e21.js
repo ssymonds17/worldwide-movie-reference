@@ -49158,7 +49158,7 @@ function (_React$Component) {
         }
       }).then(function (response) {
         console.log(token);
-        window.open("/users/".concat(localStorage.getItem('user')), '_self');
+        window.open("/users/".concat(localStorage.getItem('user')));
         alert('Movie has been removed from list of favourites');
       }).catch(function (error) {
         console.log('error removing movie from list');

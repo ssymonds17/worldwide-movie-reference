@@ -10,7 +10,7 @@ import Container from 'react-bootstrap/Container';
 import ListGroup from 'react-bootstrap/ListGroup';
 import './profile-view.scss';
 
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 const mapStateToProps = state => {
@@ -70,7 +70,7 @@ export class ProfileView extends React.Component {
         })
             .then(response => {
                 console.log(token);
-                window.open(`/users/${localStorage.getItem('user')}`, '_self');
+                window.open(`/client/users/${localStorage.getItem('user')}`, '_self');
                 alert('Movie has been removed from list of favourites');
             })
             .catch(error => {
@@ -131,9 +131,7 @@ export class ProfileView extends React.Component {
                                                 />
                                                 <Card.Body className="movie-card-body">
                                                     <Card.Title>{movie.title}</Card.Title>
-                                                    <Link to={`/users/${username}`}>
-                                                        <Button className="justify-content-center" onClick={e => this.deleteFromFaveList(movie._id)}>Remove</Button>
-                                                    </Link>
+                                                    <Button className="justify-content-center" onClick={e => this.deleteFromFaveList(movie._id)}>Remove</Button>
                                                 </Card.Body>
                                             </Card>
                                         </Col>

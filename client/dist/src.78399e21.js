@@ -49609,9 +49609,9 @@ function (_React$Component) {
         fixed: "top"
       }, _react.default.createElement(_Navbar.default.Brand, {
         className: "nav-brand",
-        href: "/"
+        href: "/client"
       }, "WorldWide Movie Reference"), _react.default.createElement(_Button.default, {
-        href: "/users/".concat(user)
+        href: "/client/users/".concat(user)
       }, user), _react.default.createElement(_Navbar.default.Collapse, {
         id: "basic-navbar-nav"
       }, _react.default.createElement(_Nav.default, {
@@ -49622,7 +49622,7 @@ function (_React$Component) {
           return _this4.onLoggedOut(user);
         }
       }, "Log Out"), _react.default.createElement(_Button.default, {
-        href: "/register"
+        href: "/client/register"
       }, "Register"), _react.default.createElement(_NavDropdown.default, {
         title: "Menu",
         id: "basic-nav-dropdown"
@@ -49636,7 +49636,7 @@ function (_React$Component) {
         href: "#actors"
       }, "Actors"))))), _react.default.createElement("br", null)), _react.default.createElement("div", null, _react.default.createElement(_reactRouterDom.Route, {
         exact: true,
-        path: "/",
+        path: "/client",
         render: function render() {
           if (!user) return _react.default.createElement(_loginView.LoginView, {
             onLoggedIn: function onLoggedIn(user) {

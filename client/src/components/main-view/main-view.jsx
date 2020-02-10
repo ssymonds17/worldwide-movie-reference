@@ -100,12 +100,12 @@ export class MainView extends React.Component {
         <Container className="main-view">
           <div>
             <Navbar className="navbarContainer mb-5" bg="primary" expand="md" fixed="top">
-              <Navbar.Brand className="nav-brand" href="/">WorldWide Movie Reference</Navbar.Brand>
-              <Button href={`/users/${user}`}>{user}</Button>
+              <Navbar.Brand className="nav-brand" href="/client">WorldWide Movie Reference</Navbar.Brand>
+              <Button href={`/client/users/${user}`}>{user}</Button>
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
                   <Button className="logout-button" onClick={user => this.onLoggedOut(user)}>Log Out</Button>
-                  <Button href="/register">Register</Button>
+                  <Button href="/client/register">Register</Button>
                   <NavDropdown title="Menu" id="basic-nav-dropdown">
                     <NavDropdown.Item href="#movies">Movies</NavDropdown.Item>
                     <NavDropdown.Item href="#genres">Genres</NavDropdown.Item>
@@ -118,7 +118,7 @@ export class MainView extends React.Component {
             <br />
           </div>
           <div>
-            <Route exact path="/" render={() => {
+            <Route exact path="/client" render={() => {
               if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
               return <MoviesList movies={movies} />;
             }

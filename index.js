@@ -3,7 +3,8 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   uuid = require('uuid'),
   app = express(),
-  cors = require('cors');
+  cors = require('cors'),
+  path = require('path');
 
 const { check, validationResult } = require('express-validator');
 
@@ -33,6 +34,13 @@ app.use(morgan('common'));
 
 // Exposes files from public folder in static form
 app.use(express.static('public'));
+
+// Allows access to the starting point of my application
+app.use("/client", express.static(path.join(__dirname, "client", "dist")));
+
+app.get("/client/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
 
 // Imports my auth.js file into my project
 let auth = require('./auth')(app);

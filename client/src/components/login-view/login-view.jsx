@@ -56,7 +56,9 @@ export function LoginView(props) {
               <Form.Group controlId="newUser">
                 <Form.Label>Not a member yet?</Form.Label>
                 <br />
-                <Button href="/register" variant="secondary" id="registerButton">Register</Button>
+                <Link to="/register">
+                  <Button variant="secondary" id="registerButton">Register</Button>
+                </Link>
               </Form.Group>
             </Form>
           </Col>

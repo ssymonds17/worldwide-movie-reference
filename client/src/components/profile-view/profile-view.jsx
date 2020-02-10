@@ -131,7 +131,7 @@ export class ProfileView extends React.Component {
                                                 />
                                                 <Card.Body className="movie-card-body">
                                                     <Card.Title>{movie.title}</Card.Title>
-                                                    <Link>
+                                                    <Link to={`/users/${username}`}>
                                                         <Button className="justify-content-center" onClick={e => this.deleteFromFaveList(movie._id)}>Remove</Button>
                                                     </Link>
                                                 </Card.Body>

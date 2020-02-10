@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import PropTypes from 'prop-types';
+import { BrowserRouter as Router } from 'react-router-dom';
+
 import Form from 'react-bootstrap/Form';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
-import PropTypes from 'prop-types';
-import axios from 'axios';
-import MyNavbar from '../navbar/navbar';
 import './login-view.scss';
 
-import { BrowserRouter as Router } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 export function LoginView(props) {
   const [username, setUsername] = useState('');
@@ -33,32 +35,33 @@ export function LoginView(props) {
   return (
 
     <Router>
-      <div>
-        <MyNavbar />
-        <Container className="loginContainer">
-          <h1>Login</h1>
-          <Form>
-            <Form.Group controlId="formUsername">
-              <Form.Label>Username</Form.Label>
-              <Form.Control type="text" placeholder="Choppy1999" value={username} onChange={e => setUsername(e.target.value)} />
-            </Form.Group>
-            <Form.Group controlId="formPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="text" placeholder="abcd1234" value={password} onChange={e => setPassword(e.target.value)} />
-            </Form.Group>
-            <Button variant="primary" onClick={handleSubmit}>Log In</Button>
-          </Form>
-          <br />
-          <Form>
-            <Form.Group controlId="newUser">
-              <Form.Text>Not a member yet?</Form.Text>
-              <Link to={`/register`}>
-                <Button variant="secondary" id="registerButton">Register</Button>
-              </Link>
-            </Form.Group>
-          </Form>
-        </Container>
-      </div>
+      <Container className="loginContainer">
+        <Row className="border rounded pt-3 mt-5 pb-3">
+          <Col xs={11} sm={6}>
+            <h1>Login</h1>
+            <Form className="registration-form" onSubmit={handleSubmit}>
+              <Form.Group controlId="formUsername">
+                <Form.Label>Username</Form.Label>
+                <Form.Control type="text" placeholder="Choppy1999" value={username} onChange={e => setUsername(e.target.value)} />
+              </Form.Group>
+              <Form.Group controlId="formPassword">
+                <Form.Label>Password</Form.Label>
+                <Form.Control type="text" placeholder="abcd1234" value={password} onChange={e => setPassword(e.target.value)} />
+              </Form.Group>
+              <Button variant="primary" onClick={handleSubmit}>Log In</Button>
+            </Form>
+          </Col>
+          <Col xs={11} sm={6} className="text-center">
+            <Form className="mt-5 p-3">
+              <Form.Group controlId="newUser">
+                <Form.Label>Not a member yet?</Form.Label>
+                <br />
+                <Button href="/register" variant="secondary" id="registerButton">Register</Button>
+              </Form.Group>
+            </Form>
+          </Col>
+        </Row>
+      </Container>
     </Router>
   )
 }
@@ -66,3 +69,5 @@ export function LoginView(props) {
 LoginView.propTypes = {
   onLoggedIn: PropTypes.func.isRequired,
 };
+
+export default connect(({ user }) => ({ user }))(LoginView);

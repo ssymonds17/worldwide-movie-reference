@@ -1,6 +1,9 @@
 import React from 'react';
 import axios from 'axios';
-import Card from 'react-bootstrap/Card';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+import Media from 'react-bootstrap/Media';
 import Button from 'react-bootstrap/Button';
 import './movie-view.scss';
 
@@ -39,31 +42,54 @@ export class MovieView extends React.Component {
     if (!movie) return null;
 
     return (
+      <div className="movie-view-container mt-5">
+        <h1>{movie.title}</h1>
+        <h6>{movie.year}</h6>
+        <Media className="d-flex flex-column flex-md-row align-items-center">
+          <Media.Body className="mb-4">
 
-      <Card className="movie-view-container" style={{ width: '75%' }} >
-        {/* <Card.Img variant="top" src={movie.imagePath} /> */}
-        < Card.Img className="movie-view-image" variant="top" src="http://via.placeholder.com/640x360" />
-        <Card.Body>
-          <Card.Title>{movie.title}</Card.Title>
-          <Card.Text>{movie.year}</Card.Text>
-          <Card.Text>Description: {movie.description}</Card.Text>
-          <Card.Text>Run Time: {movie.length} minutes</Card.Text>
-          <Card.Text>Genre:
-            <Link to={`/genres/${movie.genre.name}`}>
-              <Button className="genre-link-button" variant="link">{movie.genre.name}</Button>
-            </Link>
-          </Card.Text>
-          <Card.Text>Director:
-            <Link to={`/directors/${movie.director.name}`}>
-              <Button className="director-link-button" variant="link">{movie.director.name}</Button>
-            </Link>
-          </Card.Text>
-          <Button onClick={(event) => this.addToFaveList(event)}>Add movie to favourites</Button>
-          <Link to={`/`}>
-            <Button variant="outline-secondary" className="back-button">Back</Button>
-          </Link>
-        </Card.Body>
-      </Card >
+            <h5>Genre:&nbsp;
+          <Link to={`/genres/${movie.genre.name}`}>{movie.genre.name}</Link>
+            </h5>
+            <h5>Director:&nbsp;
+          <Link to={`/directors/${movie.director.name}`}>{movie.director.name}</Link>
+            </h5>
+            <br />
+            <h5>Summary</h5>
+            <p>{movie.description}</p>
+            <br />
+            <Button onClick={(event) => this.addToFaveList(event)}>Add movie to favourites</Button>
+            <br />
+          </Media.Body>
+          <img
+            width={220}
+            height={326}
+            className="ml-3"
+            src={movie.imagePath}
+            alt="Movie poster"
+          />
+        </Media>
+      </div>
     );
   }
 }
+
+MovieView.propTypes = {
+  movie: PropTypes.shape({
+    title: PropTypes.string,
+    imageUrl: PropTypes.string,
+    description: PropTypes.string,
+    genre: PropTypes.shape({
+      name: PropTypes.string,
+      description: PropTypes.string
+    }),
+    director: PropTypes.shape({
+      name: PropTypes.string,
+      bio: PropTypes.string,
+      birthYear: PropTypes.string,
+      deathYear: PropTypes.string
+    })
+  }).isRequired
+};
+
+export default connect(({ movies }) => ({ movies }))(MovieView);

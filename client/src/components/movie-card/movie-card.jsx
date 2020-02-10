@@ -1,24 +1,37 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import './movie-card.scss';
 
 import { Link } from "react-router-dom";
 
+const descriptionMaxChars = 100;
+
 export class MovieCard extends React.Component {
   render() {
     const { movie } = this.props;
+    let movieDescription = movie.description;
+    if (movieDescription.length > descriptionMaxChars) {
+      movieDescription = `${movieDescription.substring(0, descriptionMaxChars)}...`;
+    }
 
     return (
-      <Card className="movieCardContainer" style={{ minWidth: '12rem' }}>
-        {/* <Card.Img variant="top" src={movie.imagePath} /> */}
-        <Card.Img variant="top" src="http://via.placeholder.com/640x360" />
-        <Card.Body>
+      <Card className="movie-card-container" style={{ maxWidth: '13rem', minWidth: '13rem' }}>
+        <Card.Img
+          className="movie-image"
+          width={220}
+          height={326}
+          variant="top"
+          src={movie.imagePath}
+        />
+        <Card.Body className="movie-card-body">
           <Card.Title>{movie.title}</Card.Title>
-          <Card.Text>{movie.description}</Card.Text>
+          <Card.Text>{movieDescription}</Card.Text>
           <Link to={`/movies/${movie._id}`}>
-            <Button variant="link outline-primary">More</Button>
+            <Button className="more-button" variant="link outline-primary">More</Button>
           </Link>
         </Card.Body>
       </Card>
@@ -34,3 +47,5 @@ MovieCard.propTypes = {
     imagePath: PropTypes.string.isRequired
   }).isRequired,
 };
+
+export default connect(({ movies }) => ({ movies }))(MovieCard);

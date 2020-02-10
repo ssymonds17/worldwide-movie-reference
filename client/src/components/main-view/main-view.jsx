@@ -1,17 +1,20 @@
 import React from 'react';
 import axios from 'axios';
 
+// Redux
 import { connect } from 'react-redux';
 
 import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 import Button from 'react-bootstrap/Button';
 
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import { setMovies } from '../../actions/actions';
 import { setUser } from '../../actions/actions';
 
-//MoviesList not created yet
 import MoviesList from '../movies-list/movies-list';
 import { LoginView } from '../login-view/login-view';
 import { RegistrationView } from '../registration-view/registration-view';
@@ -50,7 +53,7 @@ export class MainView extends React.Component {
 
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    window.open('/', '_self');
+    window.open('/client', '_self');
   }
 
   getUser(token) {
@@ -93,16 +96,26 @@ export class MainView extends React.Component {
     let { user } = this.state;
 
     return (
-      <Router>
+      <Router basename="/client">
         <Container className="main-view">
           <div>
-            <Link to={`/`}>
-              <Button className="home-button">Home</Button>
-            </Link>
-            <Button className="logout-button" onClick={() => this.onLoggedOut()}>Log Out</Button>
-            <Link to={`/users/${user}`}>
-              <Button className="profile-button">{user}</Button>
-            </Link>
+            <Navbar className="navbarContainer mb-5" bg="primary" expand="md" fixed="top">
+              <Navbar.Brand className="nav-brand" href="/">WorldWide Movie Reference</Navbar.Brand>
+              <Button href={`/users/${user}`}>{user}</Button>
+              <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="mr-auto">
+                  <Button className="logout-button" onClick={user => this.onLoggedOut(user)}>Log Out</Button>
+                  <Button href="/register">Register</Button>
+                  <NavDropdown title="Menu" id="basic-nav-dropdown">
+                    <NavDropdown.Item href="#movies">Movies</NavDropdown.Item>
+                    <NavDropdown.Item href="#genres">Genres</NavDropdown.Item>
+                    <NavDropdown.Item href="#directors">Directors</NavDropdown.Item>
+                    <NavDropdown.Item href="#actors">Actors</NavDropdown.Item>
+                  </NavDropdown>
+                </Nav>
+              </Navbar.Collapse>
+            </Navbar>
+            <br />
           </div>
           <div>
             <Route exact path="/" render={() => {
@@ -113,7 +126,7 @@ export class MainView extends React.Component {
 
             <Route exact path="/register" render={() => <RegistrationView />} />
 
-            <Route path="/movies/:movieId" render={({ match }) => <MovieView movie={movies.find(m => m._id === match.params.movieId)} />} />
+            <Route path="/movies/:movieId" render={({ match }) => <MovieView movie={movies.find(movie => movie._id === match.params.movieId)} />} />
 
             <Route path="/genres/:name" render={({ match }) => {
               if (!movies) return <div className="main-view" />;
@@ -137,7 +150,10 @@ export class MainView extends React.Component {
 }
 
 let mapStateToProps = state => {
-  return { movies: state.movies }
+  return {
+    movies: state.movies,
+    user: state.user
+  }
 }
 
 export default connect(mapStateToProps, { setMovies, setUser })(MainView);

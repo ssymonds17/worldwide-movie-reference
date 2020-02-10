@@ -70,6 +70,7 @@ export class ProfileView extends React.Component {
         })
             .then(response => {
                 console.log(token);
+                window.open(`/users/${localStorage.getItem('user')}`, '_self');
                 alert('Movie has been removed from list of favourites');
             })
             .catch(error => {

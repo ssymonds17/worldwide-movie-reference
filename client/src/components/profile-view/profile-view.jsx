@@ -70,7 +70,7 @@ export class ProfileView extends React.Component {
         })
             .then(response => {
                 console.log(token);
-                window.open(`/users/${localStorage.getItem('user')}`);
+                window.open(`/users/${localStorage.getItem('user')}`, '_self');
                 alert('Movie has been removed from list of favourites');
             })
             .catch(error => {
@@ -131,7 +131,9 @@ export class ProfileView extends React.Component {
                                                 />
                                                 <Card.Body className="movie-card-body">
                                                     <Card.Title>{movie.title}</Card.Title>
-                                                    <Button className="justify-content-center" onClick={e => this.deleteFromFaveList(movie._id)}>Remove</Button>
+                                                    <Link>
+                                                        <Button className="justify-content-center" onClick={e => this.deleteFromFaveList(movie._id)}>Remove</Button>
+                                                    </Link>
                                                 </Card.Body>
                                             </Card>
                                         </Col>

@@ -101,7 +101,7 @@ export class MainView extends React.Component {
           <div>
             <Navbar className="navbarContainer mb-5" bg="primary" expand="md" fixed="top">
               <Navbar.Brand className="nav-brand" href="/client">WorldWide Movie Reference</Navbar.Brand>
-              <Button href={`client/users/${user}`}>{user}</Button>
+              <Button variant="danger" href={`/client/users/${user}`}>{user}</Button>
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
                   <Button className="logout-button" onClick={user => this.onLoggedOut(user)}>Log Out</Button>

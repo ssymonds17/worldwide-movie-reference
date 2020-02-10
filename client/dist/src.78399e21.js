@@ -49608,7 +49608,8 @@ function (_React$Component) {
         className: "nav-brand",
         href: "/client"
       }, "WorldWide Movie Reference"), _react.default.createElement(_Button.default, {
-        href: "client/users/".concat(user)
+        variant: "danger",
+        href: "/client/users/".concat(user)
       }, user), _react.default.createElement(_Navbar.default.Collapse, {
         id: "basic-navbar-nav"
       }, _react.default.createElement(_Nav.default, {

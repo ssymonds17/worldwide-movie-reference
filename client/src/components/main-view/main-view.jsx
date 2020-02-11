@@ -131,8 +131,6 @@ export class MainView extends React.Component {
             }
             } />
 
-            <Route exact="/register" render={() => <RegistrationView />} />
-
             <Route path="/movies/:movieId" render={({ match }) => <MovieView movie={movies.find(movie => movie._id === match.params.movieId)} />} />
 
             <Route path="/genres/:name" render={({ match }) => {
@@ -146,6 +144,8 @@ export class MainView extends React.Component {
               return <DirectorView director={movies.find(m => m.director.name === match.params.name).director} />
             }
             } />
+
+            <Route exact="/register" render={() => <RegistrationView />} />
 
             <Route path="/users/:username" render={() => <ProfileView movies={movies} />} />
 

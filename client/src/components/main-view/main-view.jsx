@@ -125,7 +125,7 @@ export class MainView extends React.Component {
             <br />
           </div>
           <div>
-            <Route path="/" render={() => {
+            <Route exact path="/" render={() => {
               if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
               return <MoviesList movies={movies} />;
             }

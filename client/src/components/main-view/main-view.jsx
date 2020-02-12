@@ -125,7 +125,7 @@ export class MainView extends React.Component {
             <br />
           </div>
           <div>
-            <Route exact path="/" render={() => {
+            <Route path="/" render={() => {
               if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
               return <MoviesList movies={movies} />;
             }
@@ -145,7 +145,7 @@ export class MainView extends React.Component {
             }
             } />
 
-            <Route exact="/register" render={() => <RegistrationView />} />
+            <Route path="/register" render={() => <RegistrationView />} />
 
             <Route path="/users/:username" render={() => <ProfileView movies={movies} />} />
 

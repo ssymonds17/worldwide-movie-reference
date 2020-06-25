@@ -1,3 +1,15 @@
+/**
+ * @requires react
+ * @requires axios
+ * @requires propTypes
+ * @requires react-bootstrap/Form
+ * @requires react-bootstrap/Col
+ * @requires react-bootstrap/Row
+ * @requires react-bootstrap/Button
+ * @requires react-bootstrap/Container
+ * 
+ */
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
@@ -17,6 +29,13 @@ export function LoginView(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+
+  /**
+   * Posting username and password to login
+   * @function handleSubmit
+   * @param {event}
+   * @return {object} User information 
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
     // Send a request to the server for authentication

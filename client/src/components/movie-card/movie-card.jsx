@@ -1,3 +1,11 @@
+/**
+ * @requires react
+ * @requires propTypes
+ * @requires react-bootstrap/Button
+ * @requires react-bootstrap/Card
+ * @requires react-router-dom
+ */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';

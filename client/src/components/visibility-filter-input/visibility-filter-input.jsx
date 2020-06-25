@@ -1,3 +1,10 @@
+/**
+ * @requires react
+ * @requires react-redux
+ * @requires react-bootstrap/Form
+ * @requires actions
+ */
+
 import React from 'react';
 import { connect } from 'react-redux';
 

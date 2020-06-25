@@ -1,3 +1,15 @@
+/**
+ * @requires React
+ * @requires axios
+ * @requires propTypes
+ * @requires react-bootstrap/Form
+ * @requires react-bootstrap/Button
+ * @requires react-bootstrap/Container
+ * @requires react-bootstrap/Row
+ * @requires react-bootstrap/Col
+ * @requires react-redux
+ */
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
@@ -20,6 +32,11 @@ export function UpdateView(props) {
   const [birthday, updateBirthday] = useState(user.birthday !== null ? user.birthday : '');
 
 
+  /**
+   * Allows user to update their information
+   * @function handleUpdate
+   * @param {*} event 
+   */
   const handleUpdate = (e) => {
     e.preventDefault();
     // Send a request to the server for authentication
@@ -44,6 +61,11 @@ export function UpdateView(props) {
       });
   }
 
+  /**
+   * Allows user to delete their account
+   * @function handleDelete
+   * @param {*} event 
+   */
   const handleDelete = (e) => {
     e.preventDefault();
     axios.delete(`https://worldwide-movie-reference.herokuapp.com/users/${user}`, {

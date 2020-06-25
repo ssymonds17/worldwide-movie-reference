@@ -1,3 +1,24 @@
+/**
+ * @requires react
+ * @requires axios
+ * @requires react-bootstrap/Container
+ * @requires react-bootstrap/Nav
+ * @requires react-bootstrap/Navbar
+ * @requires react-bootstrap/NavDropdown
+ * @requires react-bootstrap/Button
+ * @requires react-router-dom
+ * @requires actions
+ * @requires react-redux
+ * @requires MoviesList
+ * @requires LoginView
+ * @requires RegistrationView
+ * @requires MovieView
+ * @requires DirectorView
+ * @requires GenreView
+ * @requires ProfileView
+ * @requires UpdateView
+ */
+
 import React from 'react';
 import axios from 'axios';
 
@@ -37,6 +58,12 @@ export class MainView extends React.Component {
     };
   }
 
+  /**
+   * @function onLoggedIn
+   * @param {object} authData - from LoginView
+   * @returns {state}
+   * @returns {localStorage}
+   */
   onLoggedIn(authData) {
     this.setState({
       user: authData.user.username
@@ -47,6 +74,10 @@ export class MainView extends React.Component {
     this.getMovies(authData.token);
   }
 
+  /**
+   * @function onLoggedOut
+   * @returns {state}
+   */
   onLoggedOut() {
     this.setState({
       user: null
@@ -57,6 +88,12 @@ export class MainView extends React.Component {
     window.open('/client', '_self');
   }
 
+  /**
+   * @function getUser
+   * @param {string} user
+   * @param {string} token 
+   * @returns {object} User information
+   */
   getUser(token) {
     axios.get(`https://worldwide-movie-reference.herokuapp.com/users/${localStorage.getItem('user')}`, {
       headers: { Authorization: `Bearer ${token}` }
@@ -69,6 +106,11 @@ export class MainView extends React.Component {
       });
   }
 
+  /**
+   * @function getMovies
+   * @param {number} token
+   * @returns {array} Movies
+   */
   getMovies(token) {
     axios.get('https://worldwide-movie-reference.herokuapp.com/movies', {
       headers: { Authorization: `Bearer ${token}` }

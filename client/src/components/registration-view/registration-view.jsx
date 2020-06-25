@@ -1,3 +1,15 @@
+/**
+ * @requires react
+ * @requires axios
+ * @requires react-bootstrap/Form
+ * @requires react-bootstrap/Button
+ * @requires react-bootstrap/Container
+ * @requires react-bootstrap/Row
+ * @requires react-bootstrap/Col
+ * @requires RegistrationView
+ * @requires react-router-dom
+ */
+
 import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -18,6 +30,15 @@ export function RegistrationView() {
   const [email, createEmail] = useState('');
   const [birthday, createBirthday] = useState('');
 
+  /**
+   * User can register themselves
+   * @function handleRegister
+   * @axios
+   * @param {string} username
+   * @param {string} password
+   * @param {string} email
+   * @param {date} birthday
+   */
   const handleRegister = (e) => {
     e.preventDefault();
     // Send a request to the server for authentication

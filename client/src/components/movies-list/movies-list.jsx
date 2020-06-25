@@ -1,3 +1,13 @@
+/**
+ * @requires react
+ * @requires react-redux
+ * @requires react-bootstrap/Container
+ * @requires react-bootstrap/Row
+ * @requires react-bootstrap/Col
+ * @requires MovieCard
+ * @requires VisibilityFilterInput
+ */
+
 import React from 'react';
 import { connect } from 'react-redux';
 import Container from 'react-bootstrap/Container';
@@ -12,6 +22,11 @@ const mapStateToProps = state => {
   return { visibilityFilter };
 };
 
+/**
+ * Allows users to filter list of movies
+ * @function MoviesList
+ * @param {*} props 
+ */
 function MoviesList(props) {
   const { movies, visibilityFilter } = props;
   let filteredMovies = movies;

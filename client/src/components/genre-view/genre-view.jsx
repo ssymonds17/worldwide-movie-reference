@@ -1,3 +1,12 @@
+/**
+ * @requires react
+ * @requires react-redux
+ * @requires propTypes
+ * @requires react-bootstrap/Button
+ * @requires react-bootstrap/Media
+ * @requires react-router-dom
+ */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -7,6 +16,13 @@ import Media from 'react-bootstrap/Media';
 import './genre-view.scss';
 
 import { Link } from 'react-router-dom';
+
+/**
+ * Genre information of movie
+ * @function GenreView
+ * @param {object} props - Genre information
+ * @returns {GenreView}
+ */
 
 export class GenreView extends React.Component {
 
